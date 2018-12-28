@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface UserMapper {
-    //
+    //로그인
     @Select("SELECT * FROM USERS WHERE id = #{id} AND passwd = #{passwd}")
     User findByIdAndPassword(@Param("id") final String id, @Param("passwd") final String password);
 
