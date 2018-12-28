@@ -1,6 +1,6 @@
 package com.wonder.bring.utils;
 
-public class ResponseMessage {
+public class Message {
     public static final String LOGIN_SUCCESS = "로그인 성공";
     public static final String LOGIN_FAIL = "로그인 실패";
 

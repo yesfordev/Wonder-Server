@@ -3,7 +3,7 @@ package com.wonder.bring.utils.auth;
 import com.wonder.bring.dto.User;
 import com.wonder.bring.mapper.UserMapper;
 import com.wonder.bring.model.DefaultRes;
-import com.wonder.bring.service.JwtService;
+import com.wonder.bring.service.impl.JwtServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,10 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
-
-/**
- * Created by ds on 2018-11-13.
- */
 
 @Slf4j
 @Component
@@ -34,24 +30,15 @@ public class AuthAspect {
 
     private final UserMapper userMapper;
 
-    private final JwtService jwtService;
+    private final JwtServiceImpl jwtServiceImpl;
 
-    /**
-     * Repository 의존성 주입
-     */
-    public AuthAspect(final HttpServletRequest httpServletRequest, final UserMapper userMapper, final JwtService jwtService) {
+    public AuthAspect(final HttpServletRequest httpServletRequest, final UserMapper userMapper, final JwtServiceImpl jwtServiceImpl) {
         this.httpServletRequest = httpServletRequest;
         this.userMapper = userMapper;
-        this.jwtService = jwtService;
+        this.jwtServiceImpl = jwtServiceImpl;
     }
 
-    /**
-     * 토큰 유효성 검사
-     * @param pjp
-     * @return
-     * @throws Throwable
-     */
-    //항상 @annotation 패키지 이름을 실제 사용할 annotation 경로로 맞춰줘야 한다.
+
     @Around("@annotation(com.wonder.bring.utils.auth.Auth)")
     public Object around(final ProceedingJoinPoint pjp) throws Throwable {
         final String jwt = httpServletRequest.getHeader(AUTHORIZATION);
@@ -62,7 +49,7 @@ public class AuthAspect {
         }
 
         //토큰 해독
-        final JwtService.Token token = jwtService.decode(jwt);
+        final JwtServiceImpl.Token token = jwtServiceImpl.decode(jwt);
 
         //토큰 검사
         if (token == null) {
