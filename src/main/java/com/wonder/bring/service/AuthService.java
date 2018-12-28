@@ -8,10 +8,6 @@ import com.wonder.bring.utils.ResponseMessage;
 import com.wonder.bring.utils.StatusCode;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by ds on 2018-11-13.
- */
-
 @Service
 public class AuthService {
 

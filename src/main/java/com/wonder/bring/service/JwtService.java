@@ -13,10 +13,6 @@ import org.springframework.stereotype.Service;
 
 import static com.auth0.jwt.JWT.require;
 
-/**
- * Created by ds on 2018-11-13.
- */
-
 @Slf4j
 @Service
 public class JwtService {
