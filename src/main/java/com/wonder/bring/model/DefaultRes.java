@@ -1,7 +1,7 @@
 package com.wonder.bring.model;
 
-import com.wonder.bring.utils.ResponseMessage;
-import com.wonder.bring.utils.StatusCode;
+import com.wonder.bring.utils.Message;
+import com.wonder.bring.utils.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +36,5 @@ public class DefaultRes<T> {
                 .build();
     }
 
-    public static final DefaultRes FAIL_DEFAULT_RES = new DefaultRes(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
+    public static final DefaultRes FAIL_DEFAULT_RES = new DefaultRes(Status.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR);
 }

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class User {
-    private int user_Idx;
+    private int userIdx;
     private String id;
 }
