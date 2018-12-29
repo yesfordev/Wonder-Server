@@ -1,10 +1,10 @@
 package com.wonder.bring.model;
 
-import com.wonder.bring.utils.Message;
-import com.wonder.bring.utils.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+        import com.wonder.bring.utils.Message;
+        import com.wonder.bring.utils.Status;
+        import lombok.AllArgsConstructor;
+        import lombok.Builder;
+        import lombok.Data;
 
 
 @Data
