@@ -14,5 +14,7 @@ public interface UserMapper {
     //회원 고유 번호로 조회
     @Select("SELECT * FROM USERS WHERE userIdx = #{user_Idx}")
     User findByUserIdx(@Param("user_Idx") final int userIdx);
+
+
 }
 
