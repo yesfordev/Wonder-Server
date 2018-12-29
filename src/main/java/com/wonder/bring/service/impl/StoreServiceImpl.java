@@ -4,7 +4,14 @@ import com.wonder.bring.dto.Store;
 import com.wonder.bring.mapper.StoreMapper;
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.service.StoreService;
+import com.wonder.bring.utils.Message;
+import com.wonder.bring.utils.Status;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
+@Service
 public class StoreServiceImpl implements StoreService {
 
     private final StoreMapper storeMapper;
@@ -21,10 +28,14 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public DefaultRes<Store> findByStoreIdx(int storeIdx) {
         // 매장 상세 정보 조회
-        final Store store = storeMapper.findByStoreIdx(storeIdx);
-        if(store == null) return DefaultRes.res(Status.NOT_FOUND)
-        return null;
+        final Store store = storeMapper.findDetailByStoreIdx(storeIdx);
+
+        if(store == null) {
+            return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_DETAIL_STORE);
+        } else {
+            List<String> photoUrl = storeMapper.findPhotoByStoreIdx(storeIdx);
+            store.setPhoto(photoUrl);
+        }
+        return DefaultRes.res(Status.OK, Message.READ_DETAIL_STORE, store);
     }
-
-
 }
