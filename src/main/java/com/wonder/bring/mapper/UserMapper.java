@@ -11,7 +11,7 @@ public interface UserMapper {
     User findByIdAndPassword(@Param("id") final String id, @Param("passwd") final String password);
 
     //회원 고유 번호로 조회
-    @Select("SELECT * FROM USERS WHERE userIdx = #{user_Idx}")
+    @Select("SELECT * FROM USERS WHERE user_idx = #{user_Idx}")
     User findByUserIdx(@Param("user_Idx") final int userIdx);
 
     // 회원 아이디로 회원 고유 번호 조회
