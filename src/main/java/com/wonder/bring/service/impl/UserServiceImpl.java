@@ -44,6 +44,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public DefaultRes saveUser(final SignUpReq signUpReq) {
         try {
+            // 가입 전 id, nick 중복 검사
+            if(dupleCheckId(signUpReq.getId()).getStatus() != 200
+            || dupleCheckNick(signUpReq.getNick()).getStatus() != 200) {
+                return DefaultRes.res(Status.BAD_REQUEST, Message.SIGN_UP_FAIL);
+            }
+
+            // 빈칸 검사
+            if(signUpReq.getId().isEmpty() || signUpReq.getPasswd().isEmpty() || signUpReq.getNick().isEmpty()) {
+                return DefaultRes.NO_CONTENT_DEFAULT_RES;
+            }
+
+            // 중복되지 않았다면 저장
             userMapper.save(signUpReq);
             int idx = userMapper.findByUserId(signUpReq.getId());
             // 프로필 사진이 있을 경우

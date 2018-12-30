@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 import static com.wonder.bring.model.DefaultRes.FAIL_DEFAULT_RES;
+import static com.wonder.bring.model.DefaultRes.NO_CONTENT_DEFAULT_RES;
 
 /**
  * Created by bomi on 2018-12-28.
@@ -56,7 +57,6 @@ public class UserController {
             log.error(e.getMessage());
             return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     // 메소드 확인
@@ -73,8 +73,15 @@ public class UserController {
                                      @RequestParam("nick") final Optional<String> nick) {
         try {
             if(id.isPresent()) {
+                // id 중복검사
                 return new ResponseEntity(userService.dupleCheckId(id.get()), HttpStatus.OK);
-            } return new ResponseEntity(userService.dupleCheckNick(nick.get()), HttpStatus.OK);
+            } else if(nick.isPresent()) {
+                // 닉네임 중복검사
+                return new ResponseEntity(userService.dupleCheckNick(nick.get()), HttpStatus.OK);
+            } else {
+                // 값이 없을 경우
+                return new ResponseEntity(NO_CONTENT_DEFAULT_RES, HttpStatus.OK);
+            }
         } catch(Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
