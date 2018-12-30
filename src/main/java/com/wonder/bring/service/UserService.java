@@ -10,5 +10,5 @@ import com.wonder.bring.model.SignUpReq;
 public interface UserService {
     DefaultRes saveUser(final SignUpReq signUpReq);
     DefaultRes dupleCheckId(final String id);
-    DefaultRes dupleCheckNick(final String nink);
+    DefaultRes dupleCheckNick(final String nick);
 }

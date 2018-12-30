@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -45,8 +46,11 @@ public class UserController {
      * @return 결과 데이터
      */
     @PostMapping("")
-    public ResponseEntity signUp(final SignUpReq signUpReq) {
+    public ResponseEntity signUp(SignUpReq signUpReq, @RequestPart(value = "profile", required = false) final MultipartFile profile) {
         try {
+            if(profile != null) {
+                signUpReq.setProfile(profile);
+            }
             return new ResponseEntity(userService.saveUser(signUpReq), HttpStatus.OK);
         } catch(Exception e) {
             log.error(e.getMessage());
