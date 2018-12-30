@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.wonder.bring.service.S3FileUploadService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,14 +49,15 @@ public class S3FileUploadServiceImpl implements S3FileUploadService {
     public String upload(MultipartFile uploadFile) throws IOException {
         String origName = uploadFile.getOriginalFilename();
         String url;
-
+        File file = null;
         try {
             // 롹장자
             final String ext = origName.substring(origName.lastIndexOf('.'));
             // 파일 이름 암호화
             final String saveFileName = getUuid() + ext;
             // 파일 객체 생성
-            File file = new File(System.getProperty("user.dir") + saveFileName);
+
+            file = new File(FileUtils.getTempDirectory() +"/" +saveFileName);
 
             // 파일 변환
             uploadFile.transferTo(file);
@@ -64,12 +66,11 @@ public class S3FileUploadServiceImpl implements S3FileUploadService {
 
             // 주소 할당
             url = defaultUrl + saveFileName;
-
-            // 파일 삭제
-            file.delete();
         } catch(StringIndexOutOfBoundsException e) {
             // 파일이 없을 경우 예외 처리
             url = null;
+        } finally {
+            FileUtils.deleteQuietly(file);
         }
         return url;
     }

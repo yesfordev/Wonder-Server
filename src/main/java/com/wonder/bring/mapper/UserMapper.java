@@ -19,7 +19,7 @@ public interface UserMapper {
     int findByUserId(@Param("id") final String id);
 
     // 회원 가입
-    @Insert("INSERT INTO USERS(id, passwd, nick) VALUES(#{signUpReq.id}, #{signUpReq.passwd}, #{signUpReq.nick}) ")
+    @Insert("INSERT INTO USERS(id, passwd, nick) VALUES(#{signUpReq.id}, #{signUpReq.passwd}, #{signUpReq.nick})")
     @Options(useGeneratedKeys = true, keyColumn = "USERS.user_idx")
     void save(@Param("signUpReq") final SignUpReq signUpReq);
 
@@ -28,12 +28,11 @@ public interface UserMapper {
     void savePhoto(@Param("profileUrl") final String url, @Param("userIdx") final int idx);
 
     // 아이디 중복 검사
-    @Select("SELECT COUNT(user_idx) FROM USERS WHERE id = {#id}")
+    @Select("SELECT COUNT(*) FROM USERS WHERE id = #{id}")
     int checkId(@Param("id") final String id);
 
     // 닉네임 중복 검사
-    @Select("SELECT COUNT(user_id) FROM USERS WHERE nick = {#nick}")
+    @Select("SELECT COUNT(*) FROM USERS WHERE nick = #{nick}")
     int checkNick(@Param("nick") final String nick);
-
 }
 
