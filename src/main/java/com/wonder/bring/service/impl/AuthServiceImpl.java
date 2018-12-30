@@ -26,8 +26,8 @@ public class AuthServiceImpl implements AuthService {
         if (user != null) {
             //토큰 생성
             final JwtServiceImpl.TokenRes tokenDto = new JwtServiceImpl.TokenRes(jwtServiceImpl.create(user.getUserIdx()));
-            return DefaultRes.res(Status.OK, Message.LOGIN_SUCCESS, tokenDto);
-        }
+        return DefaultRes.res(Status.OK, Message.LOGIN_SUCCESS, tokenDto);
+    }
         return DefaultRes.res(Status.BAD_REQUEST, Message.LOGIN_FAIL);
     }
 }
