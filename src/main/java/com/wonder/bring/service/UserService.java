@@ -11,4 +11,5 @@ public interface UserService {
     DefaultRes saveUser(final SignUpReq signUpReq);
     DefaultRes dupleCheckId(final String id);
     DefaultRes dupleCheckNick(final String nick);
+    DefaultRes getUser(final int userIdx);
 }

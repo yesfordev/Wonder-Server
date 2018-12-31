@@ -1,7 +1,13 @@
 package com.wonder.bring.api;
 
+import com.wonder.bring.dto.User;
+import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.model.SignUpReq;
+import com.wonder.bring.service.JwtService;
 import com.wonder.bring.service.UserService;
+import com.wonder.bring.utils.Message;
+import com.wonder.bring.utils.Status;
+import com.wonder.bring.utils.auth.Auth;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
-import static com.wonder.bring.model.DefaultRes.FAIL_DEFAULT_RES;
-import static com.wonder.bring.model.DefaultRes.NO_CONTENT_DEFAULT_RES;
+import static com.wonder.bring.model.DefaultRes.*;
 
 /**
  * Created by bomi on 2018-12-28.
@@ -22,12 +27,16 @@ import static com.wonder.bring.model.DefaultRes.NO_CONTENT_DEFAULT_RES;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final JwtService jwtService;
+
+    private static final DefaultRes FORBIDDEN_RES = new DefaultRes(Status.FORBIDDEN, Message.FORBIDDEN);
+    private static final DefaultRes NO_CONTENT_RES = new DefaultRes(Status.BAD_REQUEST, Message.NO_CONTENT);
 
     // 생성자 의존성 주입
-    public UserController(final UserService userService) {
+    public UserController(final UserService userService, final JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
-
 
     /**
      * 마이페이지 조회
@@ -35,9 +44,23 @@ public class UserController {
      *      조회할 회원의 고유 idx
      * @return 조회 결과
      */
+    @Auth
     @GetMapping("{userIdx}")
-    public ResponseEntity getMyPage(@PathVariable(value = "userIdx") final int userIdx) {
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity getMyPage(@RequestHeader(value = "Authorization") final String header,
+                                    @PathVariable(value = "userIdx") final int userIdx) {
+        try {
+            // 권한 검사
+            if(jwtService.checkAuth(header, userIdx)) {
+                DefaultRes<User> defaultRes = userService.getUser(userIdx);
+                defaultRes.getData().setAuth(true);
+                return new ResponseEntity(defaultRes, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(FORBIDDEN_RES, HttpStatus.OK);
+            }
+        } catch(Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -59,7 +82,6 @@ public class UserController {
         }
     }
 
-    // 메소드 확인
     /**
      * id, nickname 중복 체크
      * @param id
@@ -80,7 +102,7 @@ public class UserController {
                 return new ResponseEntity(userService.dupleCheckNick(nick.get()), HttpStatus.OK);
             } else {
                 // 값이 없을 경우
-                return new ResponseEntity(NO_CONTENT_DEFAULT_RES, HttpStatus.OK);
+                return new ResponseEntity(NO_CONTENT_RES, HttpStatus.OK);
             }
         } catch(Exception e) {
             log.error(e.getMessage());

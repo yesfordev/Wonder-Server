@@ -1,5 +1,6 @@
 package com.wonder.bring.service.impl;
 
+import com.wonder.bring.dto.User;
 import com.wonder.bring.mapper.UserMapper;
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.model.SignUpReq;
@@ -35,6 +36,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 회원 조회
+     * @param userIdx
+     *      조회할 회원 고유 idx
+     * @return 결과 데이터
+     */
+    @Override
+    public DefaultRes getUser(final int userIdx) {
+        final User user = userMapper.findByUserIdx(userIdx);
+        if(user != null) {
+            return DefaultRes.res(Status.OK, Message.FIND_USER_SUCCESS, user);
+        } else {
+            return DefaultRes.res(Status.NOT_FOUND, Message.FIND_USER_FAIL);
+        }
+    }
+
+    /**
      * 회원 가입
      * @param signUpReq
      *      가입할 회원 데이터
@@ -52,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
             // 빈칸 검사
             if(signUpReq.getId().isEmpty() || signUpReq.getPasswd().isEmpty() || signUpReq.getNick().isEmpty()) {
-                return DefaultRes.NO_CONTENT_DEFAULT_RES;
+                return DefaultRes.res(Status.BAD_REQUEST, Message.SIGN_UP_FAIL);
             }
 
             // 중복되지 않았다면 저장
