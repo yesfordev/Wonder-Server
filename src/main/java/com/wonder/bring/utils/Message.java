@@ -18,6 +18,12 @@ public class Message {
     public static final String READ_DETAIL_STORE = "매장 상세 정보 조회 성공";
     public static final String NOT_FOUND_DETAIL_STORE = "매장 상세 정보를 찾을 수 없습니다.";
 
+    public static final String FIND_LIST_MENU = "메뉴 리스트 조회 성공";
+    public static final String NOT_FOUND_LIST_MENU = "메뉴 리스트를 찾을 수 없습니다.";
+
+    public static final String FIND_MENU_DETAIL = "메뉴 상세 정보 조회 성공";
+    public static final String NOT_FOUND_MENU_DETAIL = "메뉴 상세 정보를 찾을 수 없습니다.";
+
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
 
     public static final String BUCKET_ADD_SUCCESS = "장바구니 추가 성공";
