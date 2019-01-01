@@ -16,10 +16,10 @@ public class Message {
     public static final String READ_DETAIL_STORE = "매장 상세 정보 조회 성공";
     public static final String NOT_FOUND_DETAIL_STORE = "매장 상세 정보를 찾을 수 없습니다.";
 
+    public static final String GET_ORDERLIST_SUCCESS = "주문내역 조회 성공";
+
+    public static final String TOKEN_EMPTY = "토큰 값이 없어 인증 불가";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
-
-    public static final String BUCKET_ADD_SUCCESS = "장바구니 추가 성공";
-
     public static final String DB_ERROR = "데이터베이스 에러";
 
 
