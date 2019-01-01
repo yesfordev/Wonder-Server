@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -40,9 +39,11 @@ public class UserController {
 
     /**
      * 마이페이지 조회
+     * @param header
+     *      token
      * @param userIdx
-     *      조회할 회원의 고유 idx
-     * @return 조회 결과
+     *      조회할 회원 고유 idx
+     * @return 결과 데이터
      */
     @Auth
     @GetMapping("{userIdx}")
@@ -70,11 +71,8 @@ public class UserController {
      * @return 결과 데이터
      */
     @PostMapping("")
-    public ResponseEntity signUp(SignUpReq signUpReq, @RequestPart(value = "profile", required = false) final MultipartFile profile) {
+    public ResponseEntity signUp(SignUpReq signUpReq) {
         try {
-            if(profile != null) {
-                signUpReq.setProfile(profile);
-            }
             return new ResponseEntity(userService.saveUser(signUpReq), HttpStatus.OK);
         } catch(Exception e) {
             log.error(e.getMessage());
@@ -91,15 +89,15 @@ public class UserController {
      * @return 결과 데이터
      */
     @GetMapping("check")
-    public ResponseEntity dupleCheck(@RequestParam("id") final Optional<String> id,
-                                     @RequestParam("nick") final Optional<String> nick) {
+    public ResponseEntity dupleCheck(@RequestParam(value = "id", required = false) final Optional<String> id,
+                                     @RequestParam(value = "nick", required = false) final Optional<String> nick) {
         try {
             if(id.isPresent()) {
                 // id 중복검사
-                return new ResponseEntity(userService.dupleCheckId(id.get()), HttpStatus.OK);
+                return new ResponseEntity(userService.dupleCheckId(Optional.of(id.get())), HttpStatus.OK);
             } else if(nick.isPresent()) {
                 // 닉네임 중복검사
-                return new ResponseEntity(userService.dupleCheckNick(nick.get()), HttpStatus.OK);
+                return new ResponseEntity(userService.dupleCheckNick(Optional.of(nick.get())), HttpStatus.OK);
             } else {
                 // 값이 없을 경우
                 return new ResponseEntity(NO_CONTENT_RES, HttpStatus.OK);
