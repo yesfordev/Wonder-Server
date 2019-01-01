@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.List;
-
 import static com.wonder.bring.model.DefaultRes.FAIL_DEFAULT_RES;
+
+/**
+ * Create by YoungEun on 2018-12-29.
+ */
 
 @Slf4j
 @RestController
@@ -26,15 +26,12 @@ public class StoreController {
         this.storeService = storeService;
     }
 
+    // 매장 상세 정보 조회
     @GetMapping("/stores/{storeIdx}")
-    public ResponseEntity getStore(final HttpServletRequest httpServletRequest,
-                                   @PathVariable(value = "storeIdx") final int storeIdx) {
+    public ResponseEntity getStore(@PathVariable(value = "storeIdx") final int storeIdx) {
         try {
             DefaultRes<Store> defaultRes = storeService.findByStoreIdx(storeIdx);
 
-            if(defaultRes.getStatus() == 200) {
-                defaultRes.getData();
-            }
             return new ResponseEntity<>(defaultRes, HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());
