@@ -1,5 +1,6 @@
 package com.wonder.bring.service.impl;
 
+import com.wonder.bring.dto.User;
 import com.wonder.bring.mapper.UserMapper;
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.model.SignUpReq;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+import java.util.Optional;
 
 /**
  * Created by bomi on 2018-12-28.
@@ -35,6 +38,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 회원 조회
+     * @param userIdx
+     *      조회할 회원 고유 idx
+     * @return 결과 데이터
+     */
+    @Override
+    public DefaultRes getUser(final int userIdx) {
+        final User user = userMapper.findByUserIdx(userIdx);
+        if(user != null) {
+            return DefaultRes.res(Status.OK, Message.FIND_USER_SUCCESS, user);
+        } else {
+            return DefaultRes.res(Status.NOT_FOUND, Message.FIND_USER_FAIL);
+        }
+    }
+
+    /**
      * 회원 가입
      * @param signUpReq
      *      가입할 회원 데이터
@@ -44,15 +63,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public DefaultRes saveUser(final SignUpReq signUpReq) {
         try {
-            // 가입 전 id, nick 중복 검사
-            if(dupleCheckId(signUpReq.getId()).getStatus() != 200
-            || dupleCheckNick(signUpReq.getNick()).getStatus() != 200) {
+            // 빈칸 검사
+            if(signUpReq.getId().isEmpty() || signUpReq.getPasswd().isEmpty() || signUpReq.getNick().isEmpty()) {
                 return DefaultRes.res(Status.BAD_REQUEST, Message.SIGN_UP_FAIL);
             }
 
-            // 빈칸 검사
-            if(signUpReq.getId().isEmpty() || signUpReq.getPasswd().isEmpty() || signUpReq.getNick().isEmpty()) {
-                return DefaultRes.NO_CONTENT_DEFAULT_RES;
+            // 가입 전 id, nick 중복 검사
+            if(dupleCheckId(Optional.ofNullable(signUpReq.getId())).getStatus() != 200) {
+                return DefaultRes.res(Status.BAD_REQUEST, Message.ID_DUPLICATION);
+            } else if(dupleCheckNick(Optional.ofNullable(signUpReq.getNick())).getStatus() != 200) {
+                return DefaultRes.res(Status.BAD_REQUEST, Message.NICK_DUPLICATION);
             }
 
             // 중복되지 않았다면 저장
@@ -78,13 +98,18 @@ public class UserServiceImpl implements UserService {
      * @return 결과 데이터
      */
     @Override
-    public DefaultRes dupleCheckId(final String id) {
-        int check = userMapper.checkId(id);
-        // 이미 존재하는 id일 경우
-        if(check > 0) {
-            return DefaultRes.res(Status.BAD_REQUEST, Message.CHECK_FAIL);
+    public DefaultRes dupleCheckId(final Optional<String> id) {
+        // id가 null이 아니고 ""이 아닐 때,
+        if(id.isPresent() && !id.get().equals("")) {
+            int check = userMapper.checkId(id.get());
+            // 이미 존재하는 id일 경우
+            if(check > 0) {
+                return DefaultRes.res(Status.BAD_REQUEST, Message.ID_DUPLICATION);
+            }
+            return DefaultRes.res(Status.OK, Message.CHECK_SUCCESS);
         }
-        return DefaultRes.res(Status.OK, Message.CHECK_SUCCESS);
+        // id가 null이거나 ""일 경우
+        return DefaultRes.res(Status.BAD_REQUEST, Message.NO_CONTENT);
     }
 
     /**
@@ -94,12 +119,17 @@ public class UserServiceImpl implements UserService {
      * @return 결과 데이터
      */
     @Override
-    public DefaultRes dupleCheckNick(final String nick) {
-        int check = userMapper.checkNick(nick);
-        // 이미 존재하는 nick일 경우
-        if(check > 0) {
-            return DefaultRes.res(Status.BAD_REQUEST, Message.CHECK_FAIL);
+    public DefaultRes dupleCheckNick(final Optional<String> nick) {
+        // nick의 값이 null이 아니고 ""이 아닐 때,
+        if(nick.isPresent() && !nick.get().equals("")) {
+            int check = userMapper.checkNick(nick.get());
+            // 이미 존재하는 nick일 경우
+            if(check > 0) {
+                return DefaultRes.res(Status.BAD_REQUEST, Message.NICK_DUPLICATION);
+            }
+            return DefaultRes.res(Status.OK, Message.CHECK_SUCCESS);
         }
-        return DefaultRes.res(Status.OK, Message.CHECK_SUCCESS);
+        // nick이 null이거나 ""이면
+        return DefaultRes.res(Status.BAD_REQUEST, Message.NO_CONTENT);
     }
 }
