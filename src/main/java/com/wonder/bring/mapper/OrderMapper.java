@@ -1,8 +1,6 @@
 package com.wonder.bring.mapper;
 
-import com.wonder.bring.dto.Order;
 import com.wonder.bring.dto.OrderInfo;
-import javafx.scene.control.Pagination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -19,6 +17,4 @@ public interface OrderMapper {
 
     @Select("SELECT nick FROM USERS WHERE user_idx = #{userIdx}")
     String findOrderNick(@Param("userIdx") final int userIdx);
-
-
 }
