@@ -22,6 +22,6 @@ public interface StoreMapper {
     @Select("SELECT name, address, type, number, time FROM STORES WHERE store_idx = #{store_idx}")
     Store findDetailByStoreIdx(@Param("store_idx") final int storeIdx);
 
-    @Select("SELECT b.photo_url FROM STORES a inner join STORE_PHOTOS b on (a.store_idx = b.store_idx) WHERE a.store_idx = #{store_idx}")
+    @Select("SELECT b.photo_url FROM STORES a INNER JOIN STORE_PHOTOS b ON (a.store_idx = b.store_idx) WHERE a.store_idx = #{store_idx}")
     List<StorePhoto> findPhotoByStoreIdx(@Param("store_idx") final int storeIdx);
 }

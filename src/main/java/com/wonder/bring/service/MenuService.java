@@ -12,8 +12,6 @@ public interface MenuService {
     // 메뉴 리스트 조회
     DefaultRes<StoreMenu> findMenuByStoreIdx(final int storeIdx);
     // 메뉴 상세 정보 조회
-/*
-      DefaultRes<MenuDetail> findDetailMenu(final int storeIdx, final int menuIdx, final int count, final int size);
-*/
+      DefaultRes<MenuDetail> findDetailMenu(final int storeIdx, final int menuIdx);
 
 }

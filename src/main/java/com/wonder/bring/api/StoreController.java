@@ -26,7 +26,12 @@ public class StoreController {
         this.storeService = storeService;
     }
 
-    // 매장 상세 정보 조회
+    /**
+     * 매장 상세 정보 조회
+     * @param storeIdx
+     * @return 매장 상세 정보
+     */
+
     @GetMapping("/stores/{storeIdx}")
     public ResponseEntity getStore(@PathVariable(value = "storeIdx") final int storeIdx) {
         try {
