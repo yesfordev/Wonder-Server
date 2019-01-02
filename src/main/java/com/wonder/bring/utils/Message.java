@@ -20,7 +20,9 @@ public class Message {
     public static final String NOT_FOUND_DETAIL_STORE = "매장 상세 정보를 찾을 수 없습니다.";
     
     public static final String FIND_LIST_MENU = "메뉴 리스트 조회 성공";
-    public static final String NOT_FOUND_LIST_MENU = "메뉴 리스트를 찾을 수 없습니다.";
+    public static final String NOT_FOUND_LIST_MENU = "해당 매장에 메뉴가 없습니다.";
+    public static final String NOT_FOUND_STORE = "해당 매장을 찾을 수 없습니다.";
+
     public static final String FIND_MENU_DETAIL = "메뉴 상세 정보 조회 성공";
     public static final String NOT_FOUND_MENU_DETAIL = "메뉴 상세 정보를 찾을 수 없습니다.";
 
