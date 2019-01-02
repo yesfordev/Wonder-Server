@@ -1,7 +1,6 @@
 package com.wonder.bring.mapper;
 
 import com.wonder.bring.dto.Store;
-import com.wonder.bring.dto.StorePhoto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -23,5 +22,5 @@ public interface StoreMapper {
     Store findDetailByStoreIdx(@Param("store_idx") final int storeIdx);
 
     @Select("SELECT b.photo_url FROM STORES a INNER JOIN STORE_PHOTOS b ON (a.store_idx = b.store_idx) WHERE a.store_idx = #{store_idx}")
-    List<StorePhoto> findPhotoByStoreIdx(@Param("store_idx") final int storeIdx);
+    List<String> findPhotoByStoreIdx(@Param("store_idx") final int storeIdx);
 }

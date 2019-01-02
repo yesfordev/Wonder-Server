@@ -16,6 +16,10 @@ public class Message {
     public static final String FIND_USER_SUCCESS = "회원 정보 조회 성공";
     public static final String FIND_USER_FAIL = "회원을 찾을 수 없습니다";
 
+    public static final String FIND_POINT_SUCCESS = "주변 매장 조회 성공";
+    public static final String FIND_STORE_SUCCESS = "선택한 매장 조회 성공";
+    public static final String FIND_STORE_FAIL = "선택한 매장 조회 실패";
+
     public static final String READ_DETAIL_STORE = "매장 상세 정보 조회 성공";
     public static final String NOT_FOUND_DETAIL_STORE = "매장 상세 정보를 찾을 수 없습니다.";
     
