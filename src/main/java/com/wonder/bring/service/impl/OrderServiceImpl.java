@@ -21,10 +21,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private static List<OrderInfo> orderList = new LinkedList<>();
+
     //카페별 주문목록 조회
     @Override
     public DefaultRes<Order> getOrderList(final int userIdx) {
-        final Order order = orderMapper.findOrderAll(userIdx);
+        //final Order order = orderMapper.findOrderAll(userIdx);
+        String nick = orderMapper.findOrderNick(userIdx);
+        orderList = orderMapper.findOrderAll(userIdx);
+        final Order order = new Order(nick, orderList);
         if(orderList.isEmpty())
             return DefaultRes.res(Status.NOT_FOUND, "주문내역이 없습니다");
 

@@ -8,4 +8,9 @@ import java.util.List;
 public class Order {
     private String nick;
     private List<OrderInfo> orderList;
+
+    public Order(final String nick, final List<OrderInfo> orderList) {
+        this.nick = nick;
+        this.orderList = orderList;
+    }
 }
