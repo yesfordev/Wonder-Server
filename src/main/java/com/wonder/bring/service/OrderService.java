@@ -1,10 +1,12 @@
 package com.wonder.bring.service;
 
 import com.wonder.bring.dto.Order;
+import com.wonder.bring.dto.OrderInfo;
 import com.wonder.bring.model.DefaultRes;
+import javafx.scene.control.Pagination;
 
 import java.util.List;
 
 public interface OrderService {
-    DefaultRes<List<Order>> getOrderList(final int userIdx);
+    DefaultRes<Order> getOrderList(final int userIdx);
 }
