@@ -28,7 +28,7 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
 
-    private static final DefaultRes FORBIDDEN_RES = new DefaultRes(Status.FORBIDDEN, Message.FORBIDDEN);
+   // private static final DefaultRes FORBIDDEN_RES = new DefaultRes(Status.FORBIDDEN, Message.FORBIDDEN);
     private static final DefaultRes NO_CONTENT_RES = new DefaultRes(Status.BAD_REQUEST, Message.NO_CONTENT);
 
     // 생성자 의존성 주입
@@ -41,23 +41,16 @@ public class UserController {
      * 마이페이지 조회
      * @param header
      *      token
-     * @param userIdx
-     *      조회할 회원 고유 idx
      * @return 결과 데이터
      */
     @Auth
-    @GetMapping("{userIdx}")
-    public ResponseEntity getMyPage(@RequestHeader(value = "Authorization") final String header,
-                                    @PathVariable(value = "userIdx") final int userIdx) {
+    @GetMapping("")
+    public ResponseEntity getMyPage(@RequestHeader(value = "Authorization") final String header) {
         try {
-            // 권한 검사
-            if(jwtService.checkAuth(header, userIdx)) {
-                DefaultRes<User> defaultRes = userService.getUser(userIdx);
-                defaultRes.getData().setAuth(true);
-                return new ResponseEntity(defaultRes, HttpStatus.OK);
-            } else {
-                return new ResponseEntity(FORBIDDEN_RES, HttpStatus.OK);
-            }
+            final int userIdx = jwtService.decode(header).getUser_idx();
+            DefaultRes<User> defaultRes = userService.getUser(userIdx);
+            defaultRes.getData().setAuth(true);
+            return new ResponseEntity(defaultRes, HttpStatus.OK);
         } catch(Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
