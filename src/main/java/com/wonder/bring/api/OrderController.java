@@ -40,4 +40,18 @@ public class OrderController {
         }
     }
 
+    @Auth
+    @GetMapping("/{orderIdx}")
+    public ResponseEntity getOrderDetailList(@RequestHeader("Authorization") final String header, @PathVariable(value = "orderIdx") final int orderIdx){
+
+        try {
+            if(header != null) {
+                return new ResponseEntity<>(orderService.getOrderDetailList(orderIdx), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(TOKEN_EMPTY, HttpStatus.UNAUTHORIZED);
+        } catch(Exception e) {
+            return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
