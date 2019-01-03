@@ -23,6 +23,14 @@ public class MapController {
         this.mapService = mapService;
     }
 
+    /**
+     * 1km이내의 매장 조회
+     * @param latitude
+     *      위도
+     * @param longitude
+     *      경도
+     * @return
+     */
     @GetMapping("")
     public ResponseEntity getPoint(@RequestParam(value = "latitude", required = true) final double latitude,
                                    @RequestParam(value = "longitude", required = true) final double longitude) {
@@ -34,6 +42,12 @@ public class MapController {
         }
     }
 
+    /**
+     * 선택한 카페 정보 보여주기
+     * @param storeIdx
+     *      선택한 매장 고유 idx
+     * @return
+     */
     @GetMapping("stores/{storeIdx}")
     public ResponseEntity getStoreInfo(@PathVariable(value = "storeIdx") final int storeIdx) {
         try {
