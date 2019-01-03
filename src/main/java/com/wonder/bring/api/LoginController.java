@@ -2,9 +2,9 @@ package com.wonder.bring.api;
 
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.model.LoginReq;
-import com.wonder.bring.service.AuthService;
-import com.wonder.bring.utils.ResponseMessage;
-import com.wonder.bring.utils.StatusCode;
+import com.wonder.bring.service.impl.AuthServiceImpl;
+import com.wonder.bring.utils.Message;
+import com.wonder.bring.utils.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
-    private static final DefaultRes FAIL_DEFAULT_RES = new DefaultRes(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
+    private static final DefaultRes FAIL_DEFAULT_RES = new DefaultRes(Status.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR);
 
-    private final AuthService authService;
+    private final AuthServiceImpl authServiceImpl;
 
-    public LoginController(final AuthService authService) {
-        this.authService = authService;
+    public LoginController(final AuthServiceImpl authServiceImpl) {
+        this.authServiceImpl = authServiceImpl;
     }
 
-    /**
-     * 로그인
-     *
-     * @param loginReq 로그인 객체
-     * @return ResponseEntity
-     */
     @PostMapping("login")
     public ResponseEntity login(@RequestBody final LoginReq loginReq) {
         try {
-            return new ResponseEntity<>(authService.login(loginReq), HttpStatus.OK);
+            return new ResponseEntity<>(authServiceImpl.login(loginReq), HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
