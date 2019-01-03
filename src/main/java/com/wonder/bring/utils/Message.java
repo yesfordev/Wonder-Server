@@ -32,6 +32,9 @@ public class Message {
 
     public static final String GET_ORDERLIST_SUCCESS = "주문내역 조회 성공";
 
+    public static final String CREATE_ORDER_SUCCESS = "주문생성 성공";
+    public static final String FAIL_CREATE_ORDER = "주문생성 실패";
+
     public static final String TOKEN_EMPTY = "토큰 값이 없어 사용자 인증 불가";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";

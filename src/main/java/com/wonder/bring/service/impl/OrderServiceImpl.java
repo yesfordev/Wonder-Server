@@ -6,16 +6,27 @@ import com.wonder.bring.dto.OrderDetailInfo;
 import com.wonder.bring.dto.OrderInfo;
 import com.wonder.bring.mapper.OrderMapper;
 import com.wonder.bring.model.DefaultRes;
+import com.wonder.bring.model.OrderMenu;
+import com.wonder.bring.model.OrderReq;
 import com.wonder.bring.service.OrderService;
+import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class  OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
+    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     public OrderServiceImpl(final OrderMapper orderMapper) {
         this.orderMapper = orderMapper;
@@ -24,10 +35,41 @@ public class  OrderServiceImpl implements OrderService {
     private static List<OrderInfo> orderList = new LinkedList<>();
     private static List<OrderDetailInfo> orderDetailList = new LinkedList<>();
 
-    //카페별 주문목록 조회
+    /**
+     * 주문하기 생성
+     */
+    @Transactional
+    @Override
+    public DefaultRes createOrder(final int userIdx, final OrderReq orderReq) {
+        if (orderReq.checkEmpty()) {
+            try {
+                Date now = new Date();
+                now.getTime();
+
+                orderMapper.createOrderLIst(orderReq, userIdx, now);
+
+                int orderIdx = orderReq.getOrderIdx();
+
+                for (OrderMenu orderMenu : orderReq.getOrderMenuList()) {
+                    orderMapper.createOrderMenu(orderIdx, orderMenu);
+                }
+                return DefaultRes.res(Status.CREATED, Message.CREATE_ORDER_SUCCESS);
+            } catch (Exception e) {
+                log.info(e.getMessage());
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+                return DefaultRes.res(Status.DB_ERROR, Message.DB_ERROR);
+            }
+        }
+        return DefaultRes.res(Status.BAD_REQUEST, Message.FAIL_CREATE_ORDER);
+    }
+
+    /**
+     * 주문내역 전체조회
+     */
     @Override
     public DefaultRes<Order> getOrderList(final int userIdx) {
-        //final Order order = orderMapper.findOrderAll(userIdx);
+
         String nick = orderMapper.findOrderNick(userIdx);
         orderList = orderMapper.findOrderAll(userIdx);
         final Order order = new Order(nick, orderList);
@@ -37,7 +79,9 @@ public class  OrderServiceImpl implements OrderService {
         return DefaultRes.res(Status.OK, "리스트 조회 성공", order);
     }
 
-    //주문내역 상세조회
+    /**
+     * 주문내역 상세조회
+     */
     @Override
     public DefaultRes<OrderDetail> getOrderDetailList(final int orderIdx) {
         String store = orderMapper.findStoreByOrderIdx(orderIdx);
