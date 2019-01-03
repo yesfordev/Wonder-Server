@@ -12,4 +12,6 @@ public class Menu {
     private String photoUrl;
     // 가격
     private int price;
+    // 사이즈
+    private int size;
 }
