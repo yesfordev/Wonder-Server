@@ -1,5 +1,7 @@
 package com.wonder.bring.api;
 
+import com.wonder.bring.dto.Order;
+import com.wonder.bring.model.OrderReq;
 import com.wonder.bring.service.JwtService;
 import com.wonder.bring.service.OrderService;
 import com.wonder.bring.service.impl.OrderServiceImpl;
@@ -33,6 +35,20 @@ public class OrderController {
             if(header != null) {
                 int userIdx = jwtService.decode(header).getUser_idx();
                 return new ResponseEntity<>(orderService.getOrderList(userIdx), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(TOKEN_EMPTY, HttpStatus.UNAUTHORIZED);
+        } catch(Exception e) {
+            return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Auth
+    @PostMapping()
+    public ResponseEntity createOrder(@RequestHeader("Authorization") final String header, @RequestBody OrderReq orderReq) {
+        try {
+            if(header != null) {
+                int userIdx = jwtService.decode(header).getUser_idx();
+                return new ResponseEntity<>(orderService.createOrder(userIdx, orderReq), HttpStatus.OK);
             }
             return new ResponseEntity<>(TOKEN_EMPTY, HttpStatus.UNAUTHORIZED);
         } catch(Exception e) {
