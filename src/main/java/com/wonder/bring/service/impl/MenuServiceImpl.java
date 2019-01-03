@@ -1,8 +1,8 @@
 package com.wonder.bring.service.impl;
 
-import com.wonder.bring.dto.JumboMenu;
 import com.wonder.bring.dto.Menu;
 import com.wonder.bring.dto.MenuDetail;
+import com.wonder.bring.dto.SizePrice;
 import com.wonder.bring.dto.StoreMenu;
 import com.wonder.bring.mapper.MenuMapper;
 import com.wonder.bring.model.DefaultRes;
@@ -57,7 +57,7 @@ public class MenuServiceImpl implements MenuService {
      * 메뉴 상세 정보 조회
      * @param storeIdx
      * @param menuIdx
-     * @return 메뉴 상세 정보(size small일 때) + Jumbo size 정보
+     * @return 메뉴 상세 정보
      */
     @Override
     public DefaultRes<MenuDetail> findDetailMenu(int storeIdx, int menuIdx) {
@@ -67,8 +67,8 @@ public class MenuServiceImpl implements MenuService {
         if(menuDetail == null) {
             return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_MENU_DETAIL);
         } else {
-            JumboMenu jumboMenu = menuMapper.findJumboMenuByMenuIdx(menuIdx);
-            menuDetail.setJumboMenu(jumboMenu);
+            List<SizePrice> sizePrices = menuMapper.findSizePriceByMenuIdx(menuIdx);
+            menuDetail.setSizePrices(sizePrices);
         }
         return DefaultRes.res(Status.OK, Message.FIND_MENU_DETAIL, menuDetail);
     }

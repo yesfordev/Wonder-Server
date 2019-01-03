@@ -1,34 +1,62 @@
 package com.wonder.bring.mapper;
 
-import com.wonder.bring.dto.Order;
+import com.wonder.bring.dto.OrderDetailInfo;
 import com.wonder.bring.dto.OrderInfo;
 import com.wonder.bring.model.OrderMenu;
 import com.wonder.bring.model.OrderReq;
-import javafx.scene.control.Pagination;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Date;
 import java.util.List;
 
 @Mapper
 public interface OrderMapper {
-    //userIdx로 전체주문내역 받아오는 쿼리
-    @Select("SELECT ORDER_LISTS.order_idx, ORDER_LISTS.time, ORDER_LISTS.state, STORES.name " +
-            "FROM ORDER_LISTS JOIN STORES ON STORES.store_idx = ORDER_LISTS.store_idx " +
-            "WHERE user_idx = #{userIdx} AND state != 3 ORDER BY time DESC")
-    List<OrderInfo> findOrderAll(@Param("userIdx") final int userIdx);
 
-    @Select("SELECT nick FROM USERS WHERE user_idx = #{userIdx}")
-    String findOrderNick(@Param("userIdx") final int userIdx);
-
-    ///orderlist 생성
+    /**
+     * 주문하기 생성
+     */
+    //ORDER_LIST에 추가
     @Insert("INSERT INTO ORDER_LISTS(store_idx, user_idx, time) VALUES(#{orderReq.storeIdx}, #{userIdx}, #{time})")
     @Options(useGeneratedKeys = true, keyProperty="orderReq.orderIdx")
     int createOrderLIst(@Param("orderReq") final OrderReq orderReq, @Param("userIdx") final int userIdx,
                         @Param("time") final Date now);
 
+    //ORDER_MENU에 추가
     @Insert("INSERT INTO ORDER_MENU VALUES(#{orderMenu.menuIdx}, #{orderIdx}, #{orderMenu.orderCount}, " +
             "(SELECT price FROM SIZE_PRICE WHERE SIZE_PRICE.menu_idx = #{orderMenu.menuIdx} " +
             "AND SIZE_PRICE.size = #{orderMenu.size})*#{orderMenu.orderCount}, #{orderMenu.memo}, #{orderMenu.size})")
     void createOrderMenu(@Param("orderIdx") final int orderIdx, @Param("orderMenu") final OrderMenu orderMenu);
+
+
+    /**
+     * 주문내역 전체 조회
+     */
+    //주문내역 전체찾기
+    @Select("SELECT ORDER_LISTS.order_idx, ORDER_LISTS.time, ORDER_LISTS.state, STORES.name " +
+            "FROM ORDER_LISTS JOIN STORES ON STORES.store_idx = ORDER_LISTS.store_idx " +
+            "WHERE user_idx = #{userIdx} AND state != 3 ORDER BY time DESC")
+    List<OrderInfo> findOrderAll(@Param("userIdx") final int userIdx);
+
+    //닉네임조회
+    @Select("SELECT nick FROM USERS WHERE user_idx = #{userIdx}")
+    String findOrderNick(@Param("userIdx") final int userIdx);
+
+
+    /**
+     * 주문 내역 상세 조회
+     * @return
+     */
+    //매장이름
+    @Select("SELECT s.name FROM STORES s inner join ORDER_LISTS o ON (s.store_idx = o.store_idx) WHERE o.order_idx = #{order_idx}")
+    String findStoreByOrderIdx(@Param("order_idx") final int orderIdx);
+
+    //메뉴이름 사이즈 수량 총가격 요청사항
+    @Select("SELECT m.name, o.size, o.order_count, o.total_price, o.memo " +
+            "FROM MENU m " +
+            "inner join ORDER_MENU o ON (m.menu_idx = o.menu_idx) " +
+            "WHERE o.order_idx = #{order_idx}")
+    List<OrderDetailInfo> findOrderByOrderIdx(@Param("order_idx") final int orderIdx);
 }
