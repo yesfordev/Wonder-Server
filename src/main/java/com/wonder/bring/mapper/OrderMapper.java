@@ -33,5 +33,4 @@ public interface OrderMapper {
             "inner join ORDER_MENU o ON (m.menu_idx = o.menu_idx) " +
             "WHERE o.order_idx = #{order_idx}")
     List<OrderDetailInfo> findOrderByOrderIdx(@Param("order_idx") final int orderIdx);
-
 }

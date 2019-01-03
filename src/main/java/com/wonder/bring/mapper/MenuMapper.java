@@ -2,6 +2,7 @@ package com.wonder.bring.mapper;
 
 import com.wonder.bring.dto.Menu;
 import com.wonder.bring.dto.MenuDetail;
+import com.wonder.bring.dto.SizePrice;
 import com.wonder.bring.dto.StoreMenu;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,8 +21,11 @@ public interface MenuMapper {
      * 모든 메뉴 리스트 조회
      * @return 메뉴 리스트
      */
-    // storeIdx로 menuList 조회(size = 0(small)일 때)
-    @Select("SELECT a.menu_idx, a.name, a.photo_url, a.price FROM MENU a inner join STORES_MENU b ON (a.menu_idx = b.menu_idx) WHERE store_idx = #{store_idx} AND size = 0")
+    // storeIdx로 menuList 조회(size = 1(regular)일 때)
+    @Select("SELECT MENU.menu_idx, MENU.name, MENU.photo_url, SIZE_PRICE.price, SIZE_PRICE.size FROM MENU " +
+            "INNER JOIN STORES_MENU ON (MENU.menu_idx = STORES_MENU.menu_idx) " +
+            "INNER JOIN SIZE_PRICE ON (MENU.menu_idx = SIZE_PRICE.menu_idx) " +
+            "WHERE STORES_MENU.store_idx = #{store_idx} AND SIZE_PRICE.size = 1;")
     List<Menu> findMenuByStoreIdx(@Param("store_idx") final int storeIdx);
 
     // storeIdx로 매장 정보 조회
@@ -40,11 +44,11 @@ public interface MenuMapper {
      * 메뉴 상세 정보 조회
      * @return 메뉴 상세 정보
      */
-    // menuIdx로 size가 small일 때 조회
-    @Select("SELECT b.store_idx, a.menu_idx, a.name, a.photo_url, a.price FROM MENU a INNER JOIN STORES_MENU b ON (a.menu_idx = b.menu_idx) WHERE b.store_idx = #{store_idx} AND a.menu_idx = #{menu_idx}")
+    // menu 정보 조회
+    @Select("SELECT STORES_MENU.store_idx, MENU.menu_idx, MENU.name, MENU.photo_url FROM MENU INNER JOIN STORES_MENU ON (MENU.menu_idx = STORES_MENU.menu_idx) WHERE STORES_MENU.store_idx = #{store_idx} AND MENU.menu_idx = #{menu_idx}")
     MenuDetail findMenuDetail(@Param("store_idx") final int storeIdx, @Param("menu_idx") final int menuIdx);
 
-//    // size가 Jumbo일 때 조회
-//    @Select("SELECT menu_idx, price FROM MENU WHERE name = (SELECT name FROM MENU WHERE menu_idx = #{menu_idx}) AND size = 1")
-//    JumboMenu findJumboMenuByMenuIdx(@Param("menu_idx") final int menuIdx);
+    // size별 가격 조회
+    @Select("SELECT SIZE_PRICE.size, SIZE_PRICE.price FROM SIZE_PRICE INNER JOIN MENU ON (MENU.menu_idx = SIZE_PRICE.menu_idx) WHERE MENU.menu_idx = #{menu_idx}")
+    List<SizePrice> findSizePriceByMenuIdx(@Param("menu_idx") final int menuIdx);
 }

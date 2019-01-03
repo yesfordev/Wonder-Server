@@ -2,6 +2,9 @@ package com.wonder.bring.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
+
 @Data
 public class MenuDetail {
     // menuIdx
@@ -13,5 +16,5 @@ public class MenuDetail {
     // 메뉴 사진
     private String photoUrl;
     // 사이즈 별 가격
-    private SizePrice[] sizePrices;
+    private List<SizePrice> sizePrices;
 }
