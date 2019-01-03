@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class OrderServiceImpl implements OrderService {
+public class  OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     public OrderServiceImpl(final OrderMapper orderMapper) {
