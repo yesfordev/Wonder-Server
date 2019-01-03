@@ -4,6 +4,7 @@ import com.wonder.bring.service.JwtService;
 import com.wonder.bring.service.OrderService;
 import com.wonder.bring.service.impl.OrderServiceImpl;
 import com.wonder.bring.utils.auth.Auth;
+import javafx.scene.control.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,20 @@ public class OrderController {
             if(header != null) {
                 int userIdx = jwtService.decode(header).getUser_idx();
                 return new ResponseEntity<>(orderService.getOrderList(userIdx), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(TOKEN_EMPTY, HttpStatus.UNAUTHORIZED);
+        } catch(Exception e) {
+            return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Auth
+    @GetMapping("/{orderIdx}")
+    public ResponseEntity getOrderDetailList(@RequestHeader("Authorization") final String header, @PathVariable(value = "orderIdx") final int orderIdx){
+
+        try {
+            if(header != null) {
+                return new ResponseEntity<>(orderService.getOrderDetailList(orderIdx), HttpStatus.OK);
             }
             return new ResponseEntity<>(TOKEN_EMPTY, HttpStatus.UNAUTHORIZED);
         } catch(Exception e) {

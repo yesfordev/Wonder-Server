@@ -57,7 +57,7 @@ public class MenuServiceImpl implements MenuService {
      * 메뉴 상세 정보 조회
      * @param storeIdx
      * @param menuIdx
-     * @return 메뉴 상세 정보(size small일 때) + Jumbo size 정보
+     * @return 메뉴 상세 정보
      */
     @Override
     public DefaultRes<MenuDetail> findDetailMenu(int storeIdx, int menuIdx) {

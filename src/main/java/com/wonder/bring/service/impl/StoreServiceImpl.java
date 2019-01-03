@@ -1,7 +1,6 @@
 package com.wonder.bring.service.impl;
 
 import com.wonder.bring.dto.Store;
-import com.wonder.bring.dto.StorePhoto;
 import com.wonder.bring.mapper.StoreMapper;
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.service.StoreService;
@@ -37,7 +36,7 @@ public class StoreServiceImpl implements StoreService {
         if(store == null) {
             return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_DETAIL_STORE);
         } else {
-            List<StorePhoto> storePhoto = storeMapper.findPhotoByStoreIdx(storeIdx);
+            List<String> storePhoto = storeMapper.findPhotoByStoreIdx(storeIdx);
             store.setPhoto(storePhoto);
         }
         return DefaultRes.res(Status.OK, Message.READ_DETAIL_STORE, store);

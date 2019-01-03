@@ -47,7 +47,7 @@ public class MenuController {
      * 메뉴 상세 정보 조회
      * @param storeIdx
      * @param menuIdx
-     * @return 메뉴 상세 정보(size small일 때) + Jumbo size 정보
+     * @return 메뉴 상세 정보
      */
     @GetMapping("menu/{menuIdx}")
     public ResponseEntity getMenuDetail(@PathVariable(value = "storeIdx") final int storeIdx,
