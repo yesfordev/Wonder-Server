@@ -1,5 +1,6 @@
 package com.wonder.bring.mapper;
 
+import com.wonder.bring.dto.OrderDetailInfo;
 import com.wonder.bring.dto.OrderInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,4 +18,20 @@ public interface OrderMapper {
 
     @Select("SELECT nick FROM USERS WHERE user_idx = #{userIdx}")
     String findOrderNick(@Param("userIdx") final int userIdx);
+
+    /**
+     * 주문 내역 상세 조회
+     * @return
+     */
+    //매장이름
+    @Select("SELECT s.name FROM STORES s inner join ORDER_LISTS o ON (s.store_idx = o.store_idx) WHERE o.order_idx = #{order_idx}")
+    String findStoreByOrderIdx(@Param("order_idx") final int orderIdx);
+
+    //메뉴이름 사이즈 수량 총가격 요청사항
+    @Select("SELECT m.name, o.size, o.order_count, o.total_price, o.memo " +
+            "FROM MENU m " +
+            "inner join ORDER_MENU o ON (m.menu_idx = o.menu_idx) " +
+            "WHERE o.order_idx = #{order_idx}")
+    List<OrderDetailInfo> findOrderByOrderIdx(@Param("order_idx") final int orderIdx);
+
 }
