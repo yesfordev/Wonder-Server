@@ -1,6 +1,5 @@
 package com.wonder.bring.service.impl;
 
-import com.wonder.bring.dto.JumboMenu;
 import com.wonder.bring.dto.Menu;
 import com.wonder.bring.dto.MenuDetail;
 import com.wonder.bring.dto.StoreMenu;
@@ -64,12 +63,12 @@ public class MenuServiceImpl implements MenuService {
         // 메뉴 상세 정보 조회
         final MenuDetail menuDetail = menuMapper.findMenuDetail(storeIdx, menuIdx);
 
-        if(menuDetail == null) {
-            return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_MENU_DETAIL);
-        } else {
-            JumboMenu jumboMenu = menuMapper.findJumboMenuByMenuIdx(menuIdx);
-            menuDetail.setJumboMenu(jumboMenu);
-        }
+//        if(menuDetail == null) {
+//            return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_MENU_DETAIL);
+//        } else {
+//            JumboMenu jumboMenu = menuMapper.findJumboMenuByMenuIdx(menuIdx);
+//            menuDetail.setJumboMenu(jumboMenu);
+//        }
         return DefaultRes.res(Status.OK, Message.FIND_MENU_DETAIL, menuDetail);
     }
 }

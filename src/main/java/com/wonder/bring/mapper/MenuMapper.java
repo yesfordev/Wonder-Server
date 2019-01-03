@@ -1,6 +1,5 @@
 package com.wonder.bring.mapper;
 
-import com.wonder.bring.dto.JumboMenu;
 import com.wonder.bring.dto.Menu;
 import com.wonder.bring.dto.MenuDetail;
 import com.wonder.bring.dto.StoreMenu;
@@ -45,7 +44,7 @@ public interface MenuMapper {
     @Select("SELECT b.store_idx, a.menu_idx, a.name, a.photo_url, a.price FROM MENU a INNER JOIN STORES_MENU b ON (a.menu_idx = b.menu_idx) WHERE b.store_idx = #{store_idx} AND a.menu_idx = #{menu_idx}")
     MenuDetail findMenuDetail(@Param("store_idx") final int storeIdx, @Param("menu_idx") final int menuIdx);
 
-    // size가 Jumbo일 때 조회
-    @Select("SELECT menu_idx, price FROM MENU WHERE name = (SELECT name FROM MENU WHERE menu_idx = #{menu_idx}) AND size = 1")
-    JumboMenu findJumboMenuByMenuIdx(@Param("menu_idx") final int menuIdx);
+//    // size가 Jumbo일 때 조회
+//    @Select("SELECT menu_idx, price FROM MENU WHERE name = (SELECT name FROM MENU WHERE menu_idx = #{menu_idx}) AND size = 1")
+//    JumboMenu findJumboMenuByMenuIdx(@Param("menu_idx") final int menuIdx);
 }

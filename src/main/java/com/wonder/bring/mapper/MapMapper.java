@@ -14,16 +14,16 @@ import java.util.List;
 
 @Mapper
 public interface MapMapper {
-    @Select("SELECT latitude, longitude FROM STORES WHERE (latitude BETWEEN (#{latitude} - 0.01) AND (#{latitude} + 0.01)) AND (longitude BETWEEN (#{longitude} + 0.01) AND (#{longitude} + 0.01))")
-    List<Point> getPoint(@Param("latitude") final double latitude, @Param("longitude") final double longitude);
+    // 반경 1km 이내의 매장 조회
+    @Select("SELECT store_idx, ST_X(location) AS longitude, ST_Y(location) AS latitude FROM STORES WHERE ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), location) <= 1000")
+    List<Point> getStorePoints(@Param("longitude") final double longitude, @Param("latitude") final double latitude);
 
-    //@Select("SELECT name, address, type, number FROM STORE WHERE latitude = #{latitude} AND longitude = #{longitude}")
-    //Store getStoreInfo(@Param("latitude") final double latitude, @Param("longitude") final double longitude);
-
-    @Select("SELECT STORES.name, STORES.address, STORES.type, STORES.number FROM STORES WHERE store_idx = #{storeIdx}")
+    // 매장 정보 받아오기
+    @Select("SELECT name, address, type, number FROM STORES WHERE store_idx = #{storeIdx}")
     Store getStoreInfo(@Param("storeIdx") final int storeIdx);
 
-    @Select("SELECT STORE_PHOTOS.photo_url FROM STORES JOIN STORE_PHOTOS ON STORES.store_idx = STORE_PHOTOS.store_idx WHERE STORES.store_idx = #{storeIdx}")
+    // 매장 사진 받아오기
+    @Select("SELECT photo_url FROM STORE_PHOTOS WHERE store_idx = #{storeIdx}")
     List<String> getStorePhoto(@Param("storeIdx") final int storeIdx);
 
 
