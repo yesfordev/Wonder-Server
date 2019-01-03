@@ -1,12 +1,15 @@
 package com.wonder.bring.api;
 
-import com.wonder.bring.dto.Store;
 import com.wonder.bring.service.MapService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
+import static com.wonder.bring.model.DefaultRes.BAD_REQUEST_RES;
 import static com.wonder.bring.model.DefaultRes.FAIL_DEFAULT_RES;
 
 /**
@@ -32,10 +35,14 @@ public class MapController {
      * @return
      */
     @GetMapping("")
-    public ResponseEntity getPoint(@RequestParam(value = "latitude", required = true) final double latitude,
-                                   @RequestParam(value = "longitude", required = true) final double longitude) {
+    public ResponseEntity getPoint(@RequestParam(value = "latitude", required = false) final Optional<Double> latitude,
+                                   @RequestParam(value = "longitude", required = false) final Optional<Double> longitude) {
         try {
-            return new ResponseEntity(mapService.getPoint(latitude, longitude), HttpStatus.OK);
+            if(latitude.isPresent() && longitude.isPresent()) {
+                return new ResponseEntity(mapService.getPoint(latitude, longitude), HttpStatus.OK);
+            } else {
+                return new ResponseEntity(BAD_REQUEST_RES, HttpStatus.OK);
+            }
         } catch(Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);

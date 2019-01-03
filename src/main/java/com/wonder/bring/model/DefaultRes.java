@@ -38,4 +38,5 @@ public class DefaultRes<T> {
     }
 
     public static final DefaultRes FAIL_DEFAULT_RES = new DefaultRes(Status.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR);
+    public static final DefaultRes BAD_REQUEST_RES = new DefaultRes(Status.BAD_REQUEST, Message.NOT_GET_MY_POINT);
 }
