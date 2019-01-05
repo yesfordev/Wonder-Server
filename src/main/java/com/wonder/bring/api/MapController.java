@@ -39,7 +39,7 @@ public class MapController {
                                    @RequestParam(value = "longitude", required = false) final Optional<Double> longitude) {
         try {
             if(latitude.isPresent() && longitude.isPresent()) {
-                return new ResponseEntity(mapService.getPoint(latitude, longitude), HttpStatus.OK);
+                return new ResponseEntity(mapService.getStores(latitude, longitude), HttpStatus.OK);
             } else {
                 return new ResponseEntity(BAD_REQUEST_RES, HttpStatus.OK);
             }

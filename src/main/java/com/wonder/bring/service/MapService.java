@@ -9,6 +9,6 @@ import java.util.Optional;
  */
 
 public interface MapService {
-    DefaultRes getPoint(final Optional<Double> la, final Optional<Double> lo); // 위도, 경도 받아오기
+    DefaultRes getStores(final Optional<Double> la, final Optional<Double> lo); // 위도, 경도 받아오기
     DefaultRes getStoreInfo(final int storeIdx);
 }

@@ -23,8 +23,8 @@ public interface MapMapper {
     Store getStoreInfo(@Param("storeIdx") final int storeIdx);
 
     // 매장 사진 받아오기
-    @Select("SELECT photo_url FROM STORE_PHOTOS WHERE store_idx = #{storeIdx}")
-    List<String> getStorePhoto(@Param("storeIdx") final int storeIdx);
+    @Select("SELECT photo_url FROM TAB_PHOTOS WHERE store_idx = #{storeIdx}")
+    List<String> getStorePhotos(@Param("storeIdx") final int storeIdx);
 
 
 }
