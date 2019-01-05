@@ -36,12 +36,15 @@ public class MapServiceImpl implements MapService {
      * @return 1km 이내의 매장 위치 좌표
      */
    @Override
-    public DefaultRes getPoint(final Optional<Double> la, final Optional<Double> lo) {
+    public DefaultRes getStores(final Optional<Double> la, final Optional<Double> lo) {
        // 파라미터가 존재하면
        if(la.isPresent() && lo.isPresent()) {
            // 빈 값이 아니라면
            if(!la.get().equals("") && !lo.get().equals("")) {
                List<Point> list = mapMapper.getStorePoints(lo.get(), la.get());
+               if(list.isEmpty()) {
+                   return DefaultRes.res(Status.OK, Message.FIND_STORE_SUCCESS);
+               }
                return DefaultRes.res(Status.OK, Message.FIND_POINT_SUCCESS, list);
                // 빈 값이면
            } else {
@@ -65,8 +68,8 @@ public class MapServiceImpl implements MapService {
         if(store == null) {
             return DefaultRes.res(Status.NOT_FOUND, Message.FIND_STORE_FAIL);
         } else {
-            List<String> photoUrl = mapMapper.getStorePhoto(storeIdx);
-            store.setPhoto(photoUrl);
+            List<String> photoUrl = mapMapper.getStorePhotos(storeIdx);
+            store.setPhotoUrl(photoUrl);
             return DefaultRes.res(Status.OK, Message.FIND_STORE_SUCCESS, store);
         }
     }

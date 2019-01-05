@@ -16,5 +16,5 @@ public class Store {
     // 전화번호
     private String number;
     // 사진
-    private List<String> photo;
+    private List<String> photoUrl;
 }
