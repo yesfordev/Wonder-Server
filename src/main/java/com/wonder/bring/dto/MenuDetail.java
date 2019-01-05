@@ -7,10 +7,10 @@ import java.util.List;
 
 @Data
 public class MenuDetail {
-    // menuIdx
-    private int menuIdx;
     // 매장 고유 번호
     private int storeIdx;
+    // menuIdx
+    private int menuIdx;
     // 메뉴 이름
     private String name;
     // 메뉴 사진
