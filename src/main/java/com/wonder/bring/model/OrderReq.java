@@ -11,7 +11,7 @@ public class OrderReq {
     private List<OrderMenu> orderMenuList; //주문한 메뉴리스트
 
     public boolean checkEmpty() {
-        return (orderMenuList != null);
+        return (orderMenuList.isEmpty() && orderMenuList == null);
     }
 
 }

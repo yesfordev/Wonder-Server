@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,7 +25,6 @@ import java.util.List;
 @Service
 public class  OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
-    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     public OrderServiceImpl(final OrderMapper orderMapper) {
         this.orderMapper = orderMapper;
@@ -41,12 +39,9 @@ public class  OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public DefaultRes createOrder(final int userIdx, final OrderReq orderReq) {
-        if (orderReq.checkEmpty()) {
+        if (!orderReq.checkEmpty()) {
             try {
-                Date now = new Date();
-                now.getTime();
-
-                orderMapper.createOrderLIst(orderReq, userIdx, now);
+                orderMapper.createOrderLIst(orderReq, userIdx);
 
                 int orderIdx = orderReq.getOrderIdx();
 
@@ -74,9 +69,9 @@ public class  OrderServiceImpl implements OrderService {
         orderList = orderMapper.findOrderAll(userIdx);
         final Order order = new Order(nick, orderList);
         if(orderList.isEmpty())
-            return DefaultRes.res(Status.NOT_FOUND, "주문내역이 없습니다");
+            return DefaultRes.res(Status.NO_CONTENT, "주문내역이 존재하지 않습니다");
 
-        return DefaultRes.res(Status.OK, "리스트 조회 성공", order);
+        return DefaultRes.res(Status.OK, "주문내역 조회 성공", order);
     }
 
     /**
@@ -89,10 +84,8 @@ public class  OrderServiceImpl implements OrderService {
         orderDetailList = orderMapper.findOrderByOrderIdx(orderIdx);
 
         final OrderDetail orderDetail = new OrderDetail(store, orderDetailList);
-        if(orderDetailList.isEmpty())
-            return DefaultRes.res(Status.NOT_FOUND, "주문내역이 없습니다");
 
-        return DefaultRes.res(Status.OK, "리스트 조회 성공", orderDetail);
+        return DefaultRes.res(Status.OK, "주문 상세내역 조회 성공", orderDetail);
     }
 
 }
