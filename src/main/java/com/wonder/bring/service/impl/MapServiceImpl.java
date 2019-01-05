@@ -2,6 +2,7 @@ package com.wonder.bring.service.impl;
 
 import com.wonder.bring.dto.Point;
 import com.wonder.bring.dto.Store;
+import com.wonder.bring.dto.StorePreview;
 import com.wonder.bring.mapper.MapMapper;
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.service.MapService;
@@ -63,11 +64,12 @@ public class MapServiceImpl implements MapService {
      */
     @Override
     public DefaultRes getStoreInfo(final int storeIdx) {
-        Store store = mapMapper.getStoreInfo(storeIdx);
+        StorePreview store = mapMapper.getStoreInfo(storeIdx);
 
         if(store == null) {
             return DefaultRes.res(Status.NOT_FOUND, Message.FIND_STORE_FAIL);
         } else {
+            store.setPhotoUrl(mapMapper.getStorePhotos(storeIdx));
             return DefaultRes.res(Status.OK, Message.FIND_STORE_SUCCESS, store);
         }
     }
