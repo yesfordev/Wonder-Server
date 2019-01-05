@@ -28,10 +28,6 @@ public interface MenuMapper {
             "WHERE STORES_MENU.store_idx = #{store_idx} AND SIZE_PRICE.size = 1;")
     List<Menu> findMenuByStoreIdx(@Param("store_idx") final int storeIdx);
 
-    // storeIdx로 매장 정보 조회
-    @Select("SELECT store_idx, name, address, bg_photoUrl FROM STORES WHERE store_idx = #{store_idx}")
-    StoreMenu findStoreByStoreIdx(@Param("store_idx") final int storeIdx);
-
     /**
      * 메뉴 상세 정보 조회
      * @return 메뉴 상세 정보

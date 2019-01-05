@@ -16,7 +16,7 @@ import java.util.List;
 @Mapper
 public interface MapMapper {
     // 반경 1km 이내의 매장 조회
-    @Select("SELECT store_idx, ST_X(location) AS longitude, ST_Y(location) AS latitude FROM STORES WHERE ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), location) <= 1000")
+    @Select("SELECT store_idx, name AS store_name, ST_X(location) AS longitude, ST_Y(location) AS latitude FROM STORES WHERE ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), location) <= 1000")
     List<Point> getStorePoints(@Param("longitude") final double longitude, @Param("latitude") final double latitude);
 
     // 매장 정보 받아오기
