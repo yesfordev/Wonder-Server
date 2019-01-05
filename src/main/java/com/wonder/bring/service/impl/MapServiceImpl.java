@@ -68,8 +68,6 @@ public class MapServiceImpl implements MapService {
         if(store == null) {
             return DefaultRes.res(Status.NOT_FOUND, Message.FIND_STORE_FAIL);
         } else {
-            List<String> photoUrl = mapMapper.getStorePhotos(storeIdx);
-            store.setPhotoUrl(photoUrl);
             return DefaultRes.res(Status.OK, Message.FIND_STORE_SUCCESS, store);
         }
     }
