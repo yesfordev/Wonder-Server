@@ -5,6 +5,7 @@ import com.wonder.bring.dto.MenuDetail;
 import com.wonder.bring.dto.SizePrice;
 import com.wonder.bring.dto.StoreMenu;
 import com.wonder.bring.mapper.MenuMapper;
+import com.wonder.bring.mapper.StoreMapper;
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.service.MenuService;
 import com.wonder.bring.utils.Message;
@@ -21,9 +22,11 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
 
     private final MenuMapper menuMapper;
+    private final StoreMapper storeMapper;
 
-    public MenuServiceImpl(MenuMapper menuMapper) {
+    public MenuServiceImpl(MenuMapper menuMapper, StoreMapper storeMapper) {
         this.menuMapper = menuMapper;
+        this.storeMapper = storeMapper;
     }
 
     /**
@@ -34,7 +37,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public DefaultRes<StoreMenu> findMenuByStoreIdx(int storeIdx) {
         // storeIdx로 메뉴 리스트 조회
-        final StoreMenu storeMenu = menuMapper.findStoreByStoreIdx(storeIdx);
+        final StoreMenu storeMenu = storeMapper.findStoreByStoreIdx(storeIdx);
         List<Menu> menuList = menuMapper.findMenuByStoreIdx(storeIdx);
 
         // 해당 매장이 없을 때
