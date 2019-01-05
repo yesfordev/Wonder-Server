@@ -29,16 +29,8 @@ public interface MenuMapper {
     List<Menu> findMenuByStoreIdx(@Param("store_idx") final int storeIdx);
 
     // storeIdx로 매장 정보 조회
-    @Select("SELECT store_idx, name, address FROM STORES WHERE store_idx = #{store_idx}")
+    @Select("SELECT store_idx, name, address, bg_photoUrl FROM STORES WHERE store_idx = #{store_idx}")
     StoreMenu findStoreByStoreIdx(@Param("store_idx") final int storeIdx);
-
-    // storeIdx로 해당 매장에 menuList 존재 체크
-    @Select("SELECT count(*) FROM STORES_MENU WHERE store_idx = #{store_idx}")
-    int existMenuListByStoreIdx(@Param("store_idx") final int storeIdx);
-
-    // storeIdx로 매장 대표 이미지 조회
-    @Select("SELECT photo_url FROM STORE_PHOTOS WHERE store_idx = #{store_idx} AND photo_idx = 1")
-    String findStorePhotoByStoreIdx(@Param("store_idx") final int storeIdx);
 
     /**
      * 메뉴 상세 정보 조회

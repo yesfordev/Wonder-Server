@@ -27,7 +27,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     /**
-     * 메뉴 상세 정보 조회
+     * 메뉴 리스트 조회
      * @param storeIdx
      * @return 메뉴 리스트
      */
@@ -35,20 +35,15 @@ public class MenuServiceImpl implements MenuService {
     public DefaultRes<StoreMenu> findMenuByStoreIdx(int storeIdx) {
         // storeIdx로 메뉴 리스트 조회
         final StoreMenu storeMenu = menuMapper.findStoreByStoreIdx(storeIdx);
+        List<Menu> menuList = menuMapper.findMenuByStoreIdx(storeIdx);
 
-        // 매장에 메뉴가 없을 때
+        // 해당 매장이 없을 때
         if(storeMenu == null) {
             return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_STORE);
+        } else if(menuList.isEmpty()) {
+            return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_LIST_MENU);
         } else {
-            int existMenuList = menuMapper.existMenuListByStoreIdx(storeIdx);
-
-            if(existMenuList == 0) {
-                return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_LIST_MENU);
-            } else {
-                List<Menu> menuList = menuMapper.findMenuByStoreIdx(storeIdx);
-                storeMenu.setMenuList(menuList);
-                storeMenu.setStorePhotoUrl(menuMapper.findStorePhotoByStoreIdx(storeIdx));
-            }
+            storeMenu.setMenuList(menuList);
         }
         return DefaultRes.res(Status.OK, Message.FIND_LIST_MENU, storeMenu);
     }
@@ -64,10 +59,15 @@ public class MenuServiceImpl implements MenuService {
         // 메뉴 상세 정보 조회
         final MenuDetail menuDetail = menuMapper.findMenuDetail(storeIdx, menuIdx);
 
+        // 메뉴 정보가 없을 때
         if(menuDetail == null) {
             return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_MENU_DETAIL);
         } else {
             List<SizePrice> sizePrices = menuMapper.findSizePriceByMenuIdx(menuIdx);
+            // 사이즈 정보가 없을 때
+            if(sizePrices.isEmpty()) {
+                return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_SIZE_PRICE);
+            }
             menuDetail.setSizePrices(sizePrices);
         }
         return DefaultRes.res(Status.OK, Message.FIND_MENU_DETAIL, menuDetail);
