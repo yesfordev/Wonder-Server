@@ -8,9 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import static com.wonder.bring.model.DefaultRes.FAIL_DEFAULT_RES;
-import static com.wonder.bring.utils.Message.TOKEN_EMPTY;
 
 @Slf4j
 @RequestMapping("orders")
@@ -29,11 +27,8 @@ public class OrderController {
     @PostMapping()
     public ResponseEntity createOrder(@RequestHeader("Authorization") final String header, @RequestBody OrderReq orderReq) {
         try {
-            if (header != null) {
-                int userIdx = jwtService.decode(header).getUser_idx();
-                return new ResponseEntity<>(orderService.createOrder(userIdx, orderReq), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(TOKEN_EMPTY, HttpStatus.UNAUTHORIZED);
+            int userIdx = jwtService.decode(header).getUser_idx();
+            return new ResponseEntity<>(orderService.createOrder(userIdx, orderReq), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -44,11 +39,8 @@ public class OrderController {
     @GetMapping()
     public ResponseEntity getOrderList(@RequestHeader("Authorization") final String header) {
         try {
-            if (header != null) {
-                int userIdx = jwtService.decode(header).getUser_idx();
-                return new ResponseEntity<>(orderService.getOrderList(userIdx), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(TOKEN_EMPTY, HttpStatus.UNAUTHORIZED);
+            int userIdx = jwtService.decode(header).getUser_idx();
+            return new ResponseEntity<>(orderService.getOrderList(userIdx), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -58,13 +50,9 @@ public class OrderController {
     //주문상세메뉴 조회
     @Auth
     @GetMapping("/{orderIdx}")
-    public ResponseEntity getOrderDetailList(@RequestHeader("Authorization") final String header,
-                                             @PathVariable(value = "orderIdx") final int orderIdx) {
+    public ResponseEntity getOrderDetailList(@PathVariable(value = "orderIdx") final int orderIdx) {
         try {
-            if (header != null) {
-                return new ResponseEntity<>(orderService.getOrderDetailList(orderIdx), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(TOKEN_EMPTY, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(orderService.getOrderDetailList(orderIdx), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }

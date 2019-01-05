@@ -19,10 +19,9 @@ public interface OrderMapper {
      * 주문하기 생성
      */
     //ORDER_LIST에 추가
-    @Insert("INSERT INTO ORDER_LISTS(store_idx, user_idx, time) VALUES(#{orderReq.storeIdx}, #{userIdx}, #{time})")
+    @Insert("INSERT INTO ORDER_LISTS(store_idx, user_idx) VALUES(#{orderReq.storeIdx}, #{userIdx})")
     @Options(useGeneratedKeys = true, keyProperty="orderReq.orderIdx")
-    int createOrderLIst(@Param("orderReq") final OrderReq orderReq, @Param("userIdx") final int userIdx,
-                        @Param("time") final Date now);
+    int createOrderLIst(@Param("orderReq") final OrderReq orderReq, @Param("userIdx") final int userIdx);
 
     //ORDER_MENU에 추가
     @Insert("INSERT INTO ORDER_MENU VALUES(#{orderMenu.menuIdx}, #{orderIdx}, #{orderMenu.orderCount}, " +
