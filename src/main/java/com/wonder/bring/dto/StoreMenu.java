@@ -13,7 +13,7 @@ public class StoreMenu {
     // 매장 주소
     private String address;
     // 매장 대표 사진(photo_idx = 1)
-    private String storePhotoUrl;
+    private String bgPhotoUrl;
     // 메뉴
     private List<Menu> menuList;
 }

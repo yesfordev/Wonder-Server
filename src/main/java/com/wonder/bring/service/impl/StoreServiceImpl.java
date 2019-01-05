@@ -35,9 +35,6 @@ public class StoreServiceImpl implements StoreService {
 
         if(store == null) {
             return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_DETAIL_STORE);
-        } else {
-            List<String> storePhoto = storeMapper.findPhotoByStoreIdx(storeIdx);
-            store.setPhoto(storePhoto);
         }
         return DefaultRes.res(Status.OK, Message.READ_DETAIL_STORE, store);
     }

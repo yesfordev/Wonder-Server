@@ -2,8 +2,6 @@ package com.wonder.bring.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 
 @Data
 public class Store {
@@ -16,5 +14,5 @@ public class Store {
     // 전화번호
     private String number;
     // 사진
-    private List<String> photo;
+    private String bgPhotoUrl;
 }
