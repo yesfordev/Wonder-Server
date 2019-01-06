@@ -12,7 +12,6 @@ import java.util.List;
 public class StorePreview {
     private String name; // 매장 이름
     private String type; // 매장 타입
-    //private String distance; // 약 예상 거리
     private String address; // 주소
     private String number; // 전화번호
     private List<String> photoUrl; // 대표 사진

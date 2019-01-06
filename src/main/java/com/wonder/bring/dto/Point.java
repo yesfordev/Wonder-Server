@@ -12,4 +12,5 @@ public class Point {
     private String storeName; // 매장 이름
     private double latitude; // 위도
     private double longitude; // 경도
+    private String distance; // 약 예상 거리
 }

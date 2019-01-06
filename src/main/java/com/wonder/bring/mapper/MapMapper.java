@@ -16,7 +16,7 @@ import java.util.List;
 @Mapper
 public interface MapMapper {
     // 반경 1km 이내의 매장 조회
-    @Select("SELECT store_idx, name AS store_name, ST_X(location) AS longitude, ST_Y(location) AS latitude FROM STORES WHERE ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), location) <= 1000")
+    @Select("SELECT store_idx, name AS store_name, ST_X(location) AS longitude, ST_Y(location) AS latitude, ROUND(ST_DISTANCE_SPHERE(POINT(127.038843, 37.495426), location)) AS distance FROM STORES WHERE abs(ST_DISTANCE_SPHERE(POINT(127.038843, 37.495426), location)) <= 1000")
     List<Point> getStorePoints(@Param("longitude") final double longitude, @Param("latitude") final double latitude);
 
     // 매장 정보 받아오기
@@ -26,6 +26,4 @@ public interface MapMapper {
     // 매장 사진 받아오기
     @Select("SELECT photo_url FROM TAB_PHOTOS WHERE store_idx = #{storeIdx}")
     List<String> getStorePhotos(@Param("storeIdx") final int storeIdx);
-
-
 }
