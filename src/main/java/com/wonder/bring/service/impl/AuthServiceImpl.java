@@ -27,11 +27,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public DefaultRes<JwtServiceImpl.TokenRes> login(final LoginReq loginReq) {
         final User user = userMapper.findByIdAndPassword(loginReq.getId(), loginReq.getPassword());
+
         if (user != null) {
             //토큰 생성
             final JwtServiceImpl.TokenRes tokenDto = new JwtServiceImpl.TokenRes(jwtServiceImpl.create(user.getUserIdx()));
-        return DefaultRes.res(Status.OK, Message.LOGIN_SUCCESS, tokenDto);
-    }
+
+            //user의 fcmToken값 저장
+            int userIdx = userMapper.findByUserId(loginReq.getId());
+            userMapper.saveFcmToken(loginReq.getFcmToken(), userIdx);
+
+            return DefaultRes.res(Status.OK, Message.LOGIN_SUCCESS, tokenDto);
+        }
         return DefaultRes.res(Status.BAD_REQUEST, Message.LOGIN_FAIL);
     }
 
