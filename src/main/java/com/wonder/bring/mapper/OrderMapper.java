@@ -23,10 +23,10 @@ public interface OrderMapper {
     @Options(useGeneratedKeys = true, keyProperty="orderReq.orderIdx")
     int createOrderLIst(@Param("orderReq") final OrderReq orderReq, @Param("userIdx") final int userIdx);
 
+
     //ORDER_MENU에 추가
     @Insert("INSERT INTO ORDER_MENU VALUES(#{orderMenu.menuIdx}, #{orderIdx}, #{orderMenu.orderCount}, " +
-            "(SELECT price FROM SIZE_PRICE WHERE SIZE_PRICE.menu_idx = #{orderMenu.menuIdx} " +
-            "AND SIZE_PRICE.size = #{orderMenu.size})*#{orderMenu.orderCount}, #{orderMenu.memo}, #{orderMenu.size})")
+            "#{orderMenu.menuTotalPrice}, #{orderMenu.memo}, #{orderMenu.size})")
     void createOrderMenu(@Param("orderIdx") final int orderIdx, @Param("orderMenu") final OrderMenu orderMenu);
 
 
@@ -54,8 +54,7 @@ public interface OrderMapper {
 
     //메뉴이름 사이즈 수량 총가격 요청사항
     @Select("SELECT m.name, o.size, o.order_count, o.total_price, o.memo " +
-            "FROM MENU m " +
-            "inner join ORDER_MENU o ON (m.menu_idx = o.menu_idx) " +
+            "FROM MENU m inner join ORDER_MENU o ON (m.menu_idx = o.menu_idx) " +
             "WHERE o.order_idx = #{order_idx}")
     List<OrderDetailInfo> findOrderByOrderIdx(@Param("order_idx") final int orderIdx);
 }

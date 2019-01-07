@@ -6,5 +6,6 @@ import com.wonder.bring.service.impl.JwtServiceImpl;
 
 public interface AuthService {
      DefaultRes<JwtServiceImpl.TokenRes> login(final LoginReq loginReq);
+     DefaultRes<Boolean> checkToken();
 }
 
