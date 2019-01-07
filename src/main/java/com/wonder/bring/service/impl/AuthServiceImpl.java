@@ -9,6 +9,10 @@ import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -30,4 +34,10 @@ public class AuthServiceImpl implements AuthService {
     }
         return DefaultRes.res(Status.BAD_REQUEST, Message.LOGIN_FAIL);
     }
+
+    @Override
+    public DefaultRes<Boolean> checkToken() {
+        return DefaultRes.res(Status.OK, "유효한 토큰입니다");
+    }
+
 }

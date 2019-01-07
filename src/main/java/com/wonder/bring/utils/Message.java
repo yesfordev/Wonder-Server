@@ -2,7 +2,7 @@ package com.wonder.bring.utils;
 
 public class Message {
     public static final String LOGIN_SUCCESS = "로그인 성공";
-    public static final String LOGIN_FAIL = "로그인 실패";
+    public static final String LOGIN_FAIL = "일치하는 아이디와 비밀번호가 없음";
 
     public static final String SIGN_UP_SUCCESS = "회원 가입 성공";
     public static final String SIGN_UP_FAIL = "회원 가입 실패";

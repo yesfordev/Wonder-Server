@@ -5,14 +5,14 @@ import com.wonder.bring.model.LoginReq;
 import com.wonder.bring.service.impl.AuthServiceImpl;
 import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
+import com.wonder.bring.utils.auth.Auth;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
+@RequestMapping("login")
 @RestController
 public class LoginController {
 
@@ -24,7 +24,7 @@ public class LoginController {
         this.authServiceImpl = authServiceImpl;
     }
 
-    @PostMapping("login")
+    @PostMapping("")
     public ResponseEntity login(@RequestBody final LoginReq loginReq) {
         try {
             return new ResponseEntity<>(authServiceImpl.login(loginReq), HttpStatus.OK);
@@ -33,4 +33,16 @@ public class LoginController {
             return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Auth
+    @GetMapping("")
+    public ResponseEntity checkToken() {
+        try {
+            return new ResponseEntity<>(authServiceImpl.checkToken(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
