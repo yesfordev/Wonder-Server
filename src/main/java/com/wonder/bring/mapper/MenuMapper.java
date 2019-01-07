@@ -25,7 +25,7 @@ public interface MenuMapper {
     @Select("SELECT MENU.menu_idx, MENU.name, MENU.photo_url, SIZE_PRICE.price, SIZE_PRICE.size FROM MENU " +
             "INNER JOIN STORES_MENU ON (MENU.menu_idx = STORES_MENU.menu_idx) " +
             "INNER JOIN SIZE_PRICE ON (MENU.menu_idx = SIZE_PRICE.menu_idx) " +
-            "WHERE STORES_MENU.store_idx = #{store_idx} AND SIZE_PRICE.size = 1;")
+            "WHERE STORES_MENU.store_idx = #{store_idx} AND (SIZE_PRICE.size = 1 OR SIZE_PRiCE.size = 4);")
     List<Menu> findMenuByStoreIdx(@Param("store_idx") final int storeIdx);
 
     /**
