@@ -12,13 +12,10 @@ import com.wonder.bring.service.OrderService;
 import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
@@ -29,9 +26,6 @@ public class  OrderServiceImpl implements OrderService {
     public OrderServiceImpl(final OrderMapper orderMapper) {
         this.orderMapper = orderMapper;
     }
-
-    private static List<OrderInfo> orderList = new LinkedList<>();
-    private static List<OrderDetailInfo> orderDetailList = new LinkedList<>();
 
     /**
      * 주문하기 생성
@@ -66,7 +60,7 @@ public class  OrderServiceImpl implements OrderService {
     public DefaultRes<Order> getOrderList(final int userIdx) {
 
         String nick = orderMapper.findOrderNick(userIdx);
-        orderList = orderMapper.findOrderAll(userIdx);
+        List<OrderInfo> orderList = orderMapper.findOrderAll(userIdx);
         final Order order = new Order(nick, orderList);
         if(orderList.isEmpty())
             return DefaultRes.res(Status.NO_CONTENT, "주문내역이 존재하지 않습니다");
@@ -80,12 +74,13 @@ public class  OrderServiceImpl implements OrderService {
     @Override
     public DefaultRes<OrderDetail> getOrderDetailList(final int orderIdx) {
         String store = orderMapper.findStoreByOrderIdx(orderIdx);
+        if(store == null) {
+            return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_ORDER_LIST);
+        }
 
-        orderDetailList = orderMapper.findOrderByOrderIdx(orderIdx);
+        List<OrderDetailInfo> orderDetailList = orderMapper.findOrderByOrderIdx(orderIdx);
 
         final OrderDetail orderDetail = new OrderDetail(store, orderDetailList);
-
         return DefaultRes.res(Status.OK, "주문 상세내역 조회 성공", orderDetail);
     }
-
 }
