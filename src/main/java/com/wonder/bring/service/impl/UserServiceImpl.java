@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public DefaultRes saveUser(final SignUpReq signUpReq) {
         try {
-            System.out.println(signUpReq.toString());
             // 빈칸 검사
             if(signUpReq.getId().isEmpty() || signUpReq.getPassword().isEmpty() || signUpReq.getNick().isEmpty()) {
                 return DefaultRes.res(Status.BAD_REQUEST, Message.SIGN_UP_FAIL);
