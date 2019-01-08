@@ -1,6 +1,5 @@
 package com.wonder.bring.service.impl;
 
-import com.wonder.bring.mapper.FcmMapper;
 import com.wonder.bring.service.FcmService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -12,24 +11,16 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @Service
 public class FcmServiceImpl implements FcmService {
-    private final FcmMapper fcmMapper;
     private final String FIREBASE_API_URL = "https://fcm.googleapis.com/fcm/send";
-    private final String FIREBASE_SERVER_KEY = "YOUR_SERVER_KEY";
-
-    public FcmServiceImpl(final FcmMapper fcmMapper) {
-        this.fcmMapper = fcmMapper;
-    }
+    private final String FIREBASE_SERVER_KEY = "AAAAJSPI87c:APA91bHi3ezgNCH4BgFIMYW8IOoL2pghYZIH8LZPSnmqd2qwm8Q7iT-Gs3LPG6ZwAkSCt4bOQTu4FNea8DKC_k1PG-rITS01uI45TFddedgko7I3Fx3knKqO8Iq7cCB-K49e0xmGCayR";
 
     @Override
-    public void sendPush(final int orderIdx) {
+    public void sendPush(final String fcmToken, final String title, final String body) {
         JSONObject msg = new JSONObject();
 
-        //주문번호로 푸쉬보낼 점주의 토큰값 찾아오기
-        String fcmToken = fcmMapper.getFcmToken(orderIdx);
-
         //타이틀과 내용을 db에서 갖고와서 넣을것
-        //msg.put("title", messageTitle);
-        //msg.put("body", message);
+        msg.put("title", title);
+        msg.put("body", body);
 
         String response = callToFcmServer(msg, fcmToken); //파이어베이스 서버에 요청
         System.out.println("Got response from fcm Server : " + response + "\n\n");
