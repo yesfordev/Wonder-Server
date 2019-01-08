@@ -8,6 +8,7 @@ import com.wonder.bring.mapper.OrderMapper;
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.model.OrderMenu;
 import com.wonder.bring.model.OrderReq;
+import com.wonder.bring.service.FcmService;
 import com.wonder.bring.service.OrderService;
 import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
@@ -22,9 +23,11 @@ import java.util.List;
 @Service
 public class  OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
+    private final FcmService fcmService;
 
-    public OrderServiceImpl(final OrderMapper orderMapper) {
+    public OrderServiceImpl(final OrderMapper orderMapper, final FcmService fcmService) {
         this.orderMapper = orderMapper;
+        this.fcmService = fcmService;
     }
 
     /**
@@ -42,6 +45,10 @@ public class  OrderServiceImpl implements OrderService {
                 for (OrderMenu orderMenu : orderReq.getOrderMenuList()) {
                     orderMapper.createOrderMenu(orderIdx, orderMenu);
                 }
+
+                //주문번호로 fcmToken값을 찾아 전송
+                fcmService.sendPush(orderIdx);
+
                 return DefaultRes.res(Status.CREATED, Message.CREATE_ORDER_SUCCESS);
             } catch (Exception e) {
                 log.info(e.getMessage());
