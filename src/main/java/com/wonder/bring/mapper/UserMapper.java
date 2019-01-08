@@ -23,7 +23,7 @@ public interface UserMapper {
     void saveFcmToken(@Param("fcmToken") final String fcmToken, @Param("userIdx") final int userIdx);
 
     // 회원 가입
-    @Insert("INSERT INTO USERS(id, passwd, nick) VALUES(#{signUpReq.id}, #{signUpReq.passwd}, #{signUpReq.nick})")
+    @Insert("INSERT INTO USERS(id, passwd, nick) VALUES(#{signUpReq.id}, #{signUpReq.password}, #{signUpReq.nick})")
     @Options(useGeneratedKeys = true, keyColumn = "USERS.user_idx")
     void save(@Param("signUpReq") final SignUpReq signUpReq);
 

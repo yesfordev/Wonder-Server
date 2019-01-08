@@ -1,8 +1,8 @@
 package com.wonder.bring.service.impl;
 
 import com.wonder.bring.dto.Menu;
-import com.wonder.bring.dto.MenuDetail;
 import com.wonder.bring.dto.SizePrice;
+import com.wonder.bring.dto.Store;
 import com.wonder.bring.dto.StoreMenu;
 import com.wonder.bring.mapper.MenuMapper;
 import com.wonder.bring.mapper.StoreMapper;
@@ -58,21 +58,23 @@ public class MenuServiceImpl implements MenuService {
      * @return 메뉴 상세 정보
      */
     @Override
-    public DefaultRes<MenuDetail> findDetailMenu(int storeIdx, int menuIdx) {
-        // 메뉴 상세 정보 조회
-        final MenuDetail menuDetail = menuMapper.findMenuDetail(storeIdx, menuIdx);
+    public DefaultRes findDetailMenu(int storeIdx, int menuIdx) {
+        int count  = menuMapper.findStoreMenu(storeIdx, menuIdx);
+
+        // 해당 매장에 메뉴가 없거나
+        // 매장이 없거나
+        // 메뉴가 없을 경우
+        if(count == 0) {
+            return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_MENU_DETAIL);
+        }
+        // 메뉴 사이즈-가격 조회
+        final List<SizePrice> sizePrices = menuMapper.findSizePriceByMenuIdx(menuIdx);
 
         // 메뉴 정보가 없을 때
-        if(menuDetail == null) {
-            return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_MENU_DETAIL);
+        if(sizePrices.isEmpty()) {
+            return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_SIZE_PRICE);
         } else {
-            List<SizePrice> sizePrices = menuMapper.findSizePriceByMenuIdx(menuIdx);
-            // 사이즈 정보가 없을 때
-            if(sizePrices.isEmpty()) {
-                return DefaultRes.res(Status.NOT_FOUND, Message.NOT_FOUND_SIZE_PRICE);
-            }
-            menuDetail.setSizePrices(sizePrices);
+            return DefaultRes.res(Status.OK, Message.FIND_MENU_DETAIL, sizePrices);
         }
-        return DefaultRes.res(Status.OK, Message.FIND_MENU_DETAIL, menuDetail);
     }
 }
