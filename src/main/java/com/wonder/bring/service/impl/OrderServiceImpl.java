@@ -45,17 +45,20 @@ public class  OrderServiceImpl implements OrderService {
                 for (OrderMenu orderMenu : orderReq.getOrderMenuList()) {
                     orderMapper.createOrderMenu(orderIdx, orderMenu);
                 }
-
-                //주문번호로 fcmToken값을 찾아 전송
-                fcmService.sendPush(orderIdx);
-
-                return DefaultRes.res(Status.CREATED, Message.CREATE_ORDER_SUCCESS);
             } catch (Exception e) {
                 log.info(e.getMessage());
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 
                 return DefaultRes.res(Status.DB_ERROR, Message.DB_ERROR);
             }
+
+            //String fcmToken = orderMapper.getOwnerToken(orderReq.getStoreIdx());
+            String title = "주문 " + orderReq.getOrderIdx();
+            String message = orderMapper.findOrderNick(userIdx) + " 님이 주문 접수를 요청하셨습니다.";
+            //주문번호로 fcmToken값을 찾아 전송
+            fcmService.sendPush("dawazdNMKio:APA91bHIPJwWRxiBfotriZgYzXcFR39knkgj3alje4nhHn9USgLVa0O0Zpn-3TOEkOgDxirBKgfsDsdEDJPZ0YrfoV3XEVtL_p3wBjAAZz3QNAQPq3RtIWjcuAO3YN4V6eqAc4tDtjfn", title, message);
+
+            return DefaultRes.res(Status.CREATED, Message.CREATE_ORDER_SUCCESS);
         }
         return DefaultRes.res(Status.BAD_REQUEST, Message.FAIL_CREATE_ORDER);
     }

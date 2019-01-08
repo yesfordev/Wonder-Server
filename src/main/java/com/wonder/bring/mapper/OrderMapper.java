@@ -57,4 +57,11 @@ public interface OrderMapper {
             "FROM MENU m inner join ORDER_MENU o ON (m.menu_idx = o.menu_idx) " +
             "WHERE o.order_idx = #{order_idx}")
     List<OrderDetailInfo> findOrderByOrderIdx(@Param("order_idx") final int orderIdx);
+
+    /**
+     * 점주의 fcmToken값 가져오기
+     */
+    @Select("SELECT fcm_token FROM OWNER INNER JOIN STORES ON (STORES.owner_idx = OWNER.owner_idx) " +
+            "WHERE STORES.store_idx = #{storeIdx}")
+    String getOwnerToken(final int storeIdx);
 }
