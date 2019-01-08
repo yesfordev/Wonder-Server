@@ -18,6 +18,10 @@ public interface UserMapper {
     @Select("SELECT user_idx FROM USERS WHERE id = #{id}")
     int findByUserId(@Param("id") final String id);
 
+    //회원의 fcmToken 저장
+    @Update("UPDATE USERS SET fcm_token = #{fcmToken} WHERE user_idx = #{userIdx}")
+    void saveFcmToken(@Param("fcmToken") final String fcmToken, @Param("userIdx") final int userIdx);
+
     // 회원 가입
     @Insert("INSERT INTO USERS(id, passwd, nick) VALUES(#{signUpReq.id}, #{signUpReq.password}, #{signUpReq.nick})")
     @Options(useGeneratedKeys = true, keyColumn = "USERS.user_idx")

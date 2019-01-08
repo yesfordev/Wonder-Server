@@ -2,7 +2,7 @@ package com.wonder.bring.api;
 
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.model.LoginReq;
-import com.wonder.bring.service.impl.AuthServiceImpl;
+import com.wonder.bring.service.AuthService;
 import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
 import com.wonder.bring.utils.auth.Auth;
@@ -18,9 +18,9 @@ public class LoginController {
 
     private static final DefaultRes FAIL_DEFAULT_RES = new DefaultRes(Status.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR);
 
-    private final AuthServiceImpl authServiceImpl;
+    private final AuthService authServiceImpl;
 
-    public LoginController(final AuthServiceImpl authServiceImpl) {
+    public LoginController(final AuthService authServiceImpl) {
         this.authServiceImpl = authServiceImpl;
     }
 
