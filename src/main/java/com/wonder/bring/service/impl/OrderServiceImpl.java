@@ -52,11 +52,11 @@ public class  OrderServiceImpl implements OrderService {
                 return DefaultRes.res(Status.DB_ERROR, Message.DB_ERROR);
             }
 
-            //String fcmToken = orderMapper.getOwnerToken(orderReq.getStoreIdx());
+            String fcmToken = orderMapper.getOwnerToken(orderReq.getStoreIdx());
             String title = "주문 " + orderReq.getOrderIdx();
             String message = orderMapper.findOrderNick(userIdx) + " 님이 주문 접수를 요청하셨습니다.";
             //주문번호로 fcmToken값을 찾아 전송
-            fcmService.sendPush("dawazdNMKio:APA91bHIPJwWRxiBfotriZgYzXcFR39knkgj3alje4nhHn9USgLVa0O0Zpn-3TOEkOgDxirBKgfsDsdEDJPZ0YrfoV3XEVtL_p3wBjAAZz3QNAQPq3RtIWjcuAO3YN4V6eqAc4tDtjfn", title, message);
+            fcmService.sendPush(fcmToken, title, message);
 
             return DefaultRes.res(Status.CREATED, Message.CREATE_ORDER_SUCCESS);
         }
