@@ -3,6 +3,7 @@ package com.wonder.bring.service.impl;
 import com.wonder.bring.service.FcmService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,9 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class FcmServiceImpl implements FcmService {
     private final String FIREBASE_API_URL = "https://fcm.googleapis.com/fcm/send";
-    private final String FIREBASE_SERVER_KEY = "AAAAJSPI87c:APA91bHi3ezgNCH4BgFIMYW8IOoL2pghYZIH8LZPSnmqd2qwm8Q7iT-Gs3LPG6ZwAkSCt4bOQTu4FNea8DKC_k1PG-rITS01uI45TFddedgko7I3Fx3knKqO8Iq7cCB-K49e0xmGCayR";
+
+    @Value("${FIREBASE.SERVER.KEY}")
+    private String FIREBASE_SERVER_KEY;
 
     @Override
     public void sendPush(final String fcmToken, final String title, final String body) {
@@ -32,6 +35,7 @@ public class FcmServiceImpl implements FcmService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Authorization", "key=" + FIREBASE_SERVER_KEY);
         httpHeaders.set("Content-Type", "application/json");
+        httpHeaders.set("Content-Encoding", "UTF-8");
 
         JSONObject json = new JSONObject();
 
