@@ -1,6 +1,5 @@
 package com.wonder.bring.api;
 
-import com.wonder.bring.dto.MenuDetail;
 import com.wonder.bring.dto.StoreMenu;
 import com.wonder.bring.model.DefaultRes;
 import com.wonder.bring.service.MenuService;
@@ -35,7 +34,7 @@ public class MenuController {
     public ResponseEntity getMenuList(@PathVariable(value = "storeIdx") final int storeIdx) {
         try{
             DefaultRes<StoreMenu> defaultRes = menuService.findMenuByStoreIdx(storeIdx);
-
+            System.out.println(defaultRes);
             return new ResponseEntity<>(defaultRes, HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -53,8 +52,7 @@ public class MenuController {
     public ResponseEntity getMenuDetail(@PathVariable(value = "storeIdx") final int storeIdx,
                                         @PathVariable(value = "menuIdx") final int menuIdx) {
         try {
-            DefaultRes<MenuDetail> defaultRes = menuService.findDetailMenu(storeIdx, menuIdx);
-
+            DefaultRes  defaultRes = menuService.findDetailMenu(storeIdx, menuIdx);
             return new ResponseEntity<>(defaultRes, HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());

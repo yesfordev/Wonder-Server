@@ -57,6 +57,7 @@ public class  OrderServiceImpl implements OrderService {
             String message = orderMapper.findOrderNick(userIdx) + " 님이 주문 접수를 요청하셨습니다.";
             //주문번호로 fcmToken값을 찾아 전송
             fcmService.sendPush(fcmToken, title, message);
+
             return DefaultRes.res(Status.CREATED, Message.CREATE_ORDER_SUCCESS);
         }
         return DefaultRes.res(Status.BAD_REQUEST, Message.FAIL_CREATE_ORDER);
