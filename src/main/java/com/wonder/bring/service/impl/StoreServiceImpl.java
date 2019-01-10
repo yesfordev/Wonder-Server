@@ -8,8 +8,6 @@ import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Create by YoungEun on 2018-12-29.
  */

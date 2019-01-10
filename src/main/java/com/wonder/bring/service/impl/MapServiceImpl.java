@@ -1,7 +1,6 @@
 package com.wonder.bring.service.impl;
 
 import com.wonder.bring.dto.Point;
-import com.wonder.bring.dto.Store;
 import com.wonder.bring.dto.StorePreview;
 import com.wonder.bring.mapper.MapMapper;
 import com.wonder.bring.model.DefaultRes;
