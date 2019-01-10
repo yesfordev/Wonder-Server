@@ -2,7 +2,6 @@ package com.wonder.bring.mapper;
 
 import com.wonder.bring.dto.Menu;
 import com.wonder.bring.dto.SizePrice;
-import com.wonder.bring.dto.Store;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -24,7 +23,7 @@ public interface MenuMapper {
     @Select("SELECT MENU.menu_idx, MENU.name, MENU.photo_url, SIZE_PRICE.price, SIZE_PRICE.size FROM MENU " +
             "INNER JOIN STORES_MENU ON (MENU.menu_idx = STORES_MENU.menu_idx) " +
             "INNER JOIN SIZE_PRICE ON (MENU.menu_idx = SIZE_PRICE.menu_idx) " +
-            "WHERE STORES_MENU.store_idx = #{store_idx} AND (SIZE_PRICE.size = 1 OR SIZE_PRICE.size = 4)")
+            "WHERE STORES_MENU.store_idx = #{store_idx} AND (SIZE_PRICE.size = 1 OR SIZE_PRICE.size = 4) ORDER BY SIZE_PRICE.size")
     List<Menu> findMenuByStoreIdx(@Param("store_idx") final int storeIdx);
 
     /**

@@ -39,7 +39,11 @@ public class FcmServiceImpl implements FcmService {
 
         JSONObject json = new JSONObject();
 
-        json.put("notification", message);
+        json.put("message", data);
+
+
+        json.put("data", message);
+        //json.put("notification", message);
         json.put("to", receiverFcmKey);
 
         System.out.println("Sending :" + json.toString());
