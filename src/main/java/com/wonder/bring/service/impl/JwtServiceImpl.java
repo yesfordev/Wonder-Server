@@ -24,7 +24,6 @@ public class JwtServiceImpl implements JwtService {
     @Value("${JWT.SECRET}")
     private String SECRET;
 
-
     @Override
     public String create(final int user_idx) {
         try {

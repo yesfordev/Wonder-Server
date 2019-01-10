@@ -33,10 +33,14 @@ public interface MenuMapper {
      * @return 메뉴 상세 정보
      */
     // menu 정보 조회
-    @Select("SELECT STORES_MENU.store_idx, MENU.menu_idx, MENU.name, MENU.photo_url FROM MENU INNER JOIN STORES_MENU ON (MENU.menu_idx = STORES_MENU.menu_idx) WHERE STORES_MENU.store_idx = #{store_idx} AND MENU.menu_idx = #{menu_idx}")
+    @Select("SELECT STORES_MENU.store_idx, MENU.menu_idx, MENU.name, MENU.photo_url FROM MENU " +
+            "INNER JOIN STORES_MENU ON (MENU.menu_idx = STORES_MENU.menu_idx) " +
+            "WHERE STORES_MENU.store_idx = #{store_idx} AND MENU.menu_idx = #{menu_idx}")
     MenuDetail findMenuDetail(@Param("store_idx") final int storeIdx, @Param("menu_idx") final int menuIdx);
 
     // size별 가격 조회
-    @Select("SELECT SIZE_PRICE.size, SIZE_PRICE.price FROM SIZE_PRICE INNER JOIN MENU ON (MENU.menu_idx = SIZE_PRICE.menu_idx) WHERE MENU.menu_idx = #{menu_idx}")
+    @Select("SELECT SIZE_PRICE.size, SIZE_PRICE.price " +
+            "FROM SIZE_PRICE INNER JOIN MENU ON (MENU.menu_idx = SIZE_PRICE.menu_idx) " +
+            "WHERE MENU.menu_idx = #{menu_idx}")
     List<SizePrice> findSizePriceByMenuIdx(@Param("menu_idx") final int menuIdx);
 }

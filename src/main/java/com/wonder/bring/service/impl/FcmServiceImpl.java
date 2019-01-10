@@ -8,6 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 @Slf4j
 @Service
 public class FcmServiceImpl implements FcmService {
@@ -18,10 +21,13 @@ public class FcmServiceImpl implements FcmService {
     public void sendPush(final String fcmToken, final String title, final String body) {
         JSONObject msg = new JSONObject();
 
-        //타이틀과 내용을 db에서 갖고와서 넣을것
-        msg.put("title", title);
-        msg.put("body", body);
-
+        try {
+            msg.put("title", URLEncoder.encode(title  ,"UTF-8"));
+            msg.put("body", URLEncoder.encode(title  ,"UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         String response = callToFcmServer(msg, fcmToken); //파이어베이스 서버에 요청
         System.out.println("Got response from fcm Server : " + response + "\n\n");
 
@@ -32,11 +38,14 @@ public class FcmServiceImpl implements FcmService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Authorization", "key=" + FIREBASE_SERVER_KEY);
         httpHeaders.set("Content-Type", "application/json");
+        httpHeaders.set("Content-Encoding", "UTF-8");
 
         JSONObject json = new JSONObject();
 
-        json.put("notification", message);
         json.put("to", receiverFcmKey);
+        //json.put("data", message);
+        json.put("notification", message);
+        json.put("sound", "default");
 
         System.out.println("Sending :" + json.toString());
 
