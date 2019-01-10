@@ -28,7 +28,6 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
 
-   // private static final DefaultRes FORBIDDEN_RES = new DefaultRes(Status.FORBIDDEN, Message.FORBIDDEN);
     private static final DefaultRes NO_CONTENT_RES = new DefaultRes(Status.BAD_REQUEST, Message.NO_CONTENT);
 
     // 생성자 의존성 주입

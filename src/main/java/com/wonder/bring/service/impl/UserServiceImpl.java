@@ -9,14 +9,13 @@ import com.wonder.bring.service.UserService;
 import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.Optional;
+
+import static com.wonder.bring.utils.Encryption.encrypt;
 
 /**
  * Created by bomi on 2018-12-28.
@@ -29,18 +28,15 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     // UserService에서 파일 업로드(사진 업로드)를 위해 추가
     private final S3FileUploadService s3FileUploadService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 생성자 의존성 주입
      * @param userMapper
      * @param s3FileUploadService
      */
-    public UserServiceImpl(final UserMapper userMapper, final S3FileUploadService s3FileUploadService,
-                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(final UserMapper userMapper, final S3FileUploadService s3FileUploadService) {
         this.s3FileUploadService = s3FileUploadService;
         this.userMapper = userMapper;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     /**
@@ -85,9 +81,9 @@ public class UserServiceImpl implements UserService {
 
             //패스워드 인코딩
 
-            String rawPassword =  signUpReq.getPasswd();
-            String encodedPassword = bCryptPasswordEncoder.encode(rawPassword);
-            signUpReq.setPasswd(encodedPassword);
+            String rawPassword =  signUpReq.getPassword();
+            String encodedPassword = encrypt(rawPassword);
+            signUpReq.setPassword(encodedPassword);
 
             userMapper.save(signUpReq);
             int idx = userMapper.findByUserId(signUpReq.getId());

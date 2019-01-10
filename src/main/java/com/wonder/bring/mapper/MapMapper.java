@@ -1,7 +1,6 @@
 package com.wonder.bring.mapper;
 
 import com.wonder.bring.dto.Point;
-import com.wonder.bring.dto.Store;
 import com.wonder.bring.dto.StorePreview;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
