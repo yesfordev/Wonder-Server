@@ -2,7 +2,6 @@ package com.wonder.bring.mapper;
 
 import com.wonder.bring.dto.Menu;
 import com.wonder.bring.dto.SizePrice;
-import com.wonder.bring.dto.Store;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

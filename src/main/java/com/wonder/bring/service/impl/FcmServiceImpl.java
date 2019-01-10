@@ -44,7 +44,7 @@ public class FcmServiceImpl implements FcmService {
         httpHeaders.set("Content-Encoding", "UTF-8");
 
         JSONObject json = new JSONObject();
-
+        
         json.put("to", receiverFcmKey);
         json.put("data", message);
         //json.put("notification", message);
