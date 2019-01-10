@@ -49,7 +49,8 @@ public interface OrderMapper {
      * @return
      */
     //매장이름
-    @Select("SELECT s.name FROM STORES s inner join ORDER_LISTS o ON (s.store_idx = o.store_idx) WHERE o.order_idx = #{order_idx}")
+    @Select("SELECT s.name FROM STORES s inner join ORDER_LISTS o ON (s.store_idx = o.store_idx) " +
+            "WHERE o.order_idx = #{order_idx}")
     String findStoreByOrderIdx(@Param("order_idx") final int orderIdx);
 
     //메뉴이름 사이즈 수량 총가격 요청사항
