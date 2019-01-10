@@ -1,9 +1,7 @@
 package com.wonder.bring.mapper;
 
 import com.wonder.bring.dto.Menu;
-import com.wonder.bring.dto.MenuDetail;
 import com.wonder.bring.dto.SizePrice;
-import com.wonder.bring.dto.StoreMenu;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -25,7 +23,7 @@ public interface MenuMapper {
     @Select("SELECT MENU.menu_idx, MENU.name, MENU.photo_url, SIZE_PRICE.price, SIZE_PRICE.size FROM MENU " +
             "INNER JOIN STORES_MENU ON (MENU.menu_idx = STORES_MENU.menu_idx) " +
             "INNER JOIN SIZE_PRICE ON (MENU.menu_idx = SIZE_PRICE.menu_idx) " +
-            "WHERE STORES_MENU.store_idx = #{store_idx} AND (SIZE_PRICE.size = 1 OR SIZE_PRiCE.size = 4);")
+            "WHERE STORES_MENU.store_idx = #{store_idx} AND (SIZE_PRICE.size = 1 OR SIZE_PRICE.size = 4) ORDER BY SIZE_PRICE.size")
     List<Menu> findMenuByStoreIdx(@Param("store_idx") final int storeIdx);
 
     /**
@@ -33,10 +31,10 @@ public interface MenuMapper {
      * @return 메뉴 상세 정보
      */
     // menu 정보 조회
-    @Select("SELECT STORES_MENU.store_idx, MENU.menu_idx, MENU.name, MENU.photo_url FROM MENU INNER JOIN STORES_MENU ON (MENU.menu_idx = STORES_MENU.menu_idx) WHERE STORES_MENU.store_idx = #{store_idx} AND MENU.menu_idx = #{menu_idx}")
-    MenuDetail findMenuDetail(@Param("store_idx") final int storeIdx, @Param("menu_idx") final int menuIdx);
+    @Select("SELECT COUNT(*) FROM STORES_MENU WHERE store_idx = #{store_idx} AND menu_idx = #{menu_idx}")
+    int findStoreMenu(@Param("store_idx") final int storeIdx, @Param("menu_idx") final int menuIdx);
 
     // size별 가격 조회
-    @Select("SELECT SIZE_PRICE.size, SIZE_PRICE.price FROM SIZE_PRICE INNER JOIN MENU ON (MENU.menu_idx = SIZE_PRICE.menu_idx) WHERE MENU.menu_idx = #{menu_idx}")
+    @Select("SELECT size, price FROM SIZE_PRICE WHERE menu_idx = #{menu_idx}")
     List<SizePrice> findSizePriceByMenuIdx(@Param("menu_idx") final int menuIdx);
 }

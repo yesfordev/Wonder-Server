@@ -1,7 +1,6 @@
 package com.wonder.bring.mapper;
 
 import com.wonder.bring.dto.Point;
-import com.wonder.bring.dto.Store;
 import com.wonder.bring.dto.StorePreview;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,7 +22,7 @@ public interface MapMapper {
     @Select("SELECT name, address, type, number FROM STORES WHERE store_idx = #{storeIdx}")
     StorePreview getStoreInfo(@Param("storeIdx") final int storeIdx);
 
-    // 매장 사진 받아오기
-    @Select("SELECT photo_url FROM TAB_PHOTOS WHERE store_idx = #{storeIdx}")
+    // 매장 사진 3장 받아오기
+    @Select("SELECT photo_url FROM TAB_PHOTOS WHERE store_idx = #{storeIdx} LIMIT 0, 3")
     List<String> getStorePhotos(@Param("storeIdx") final int storeIdx);
 }

@@ -34,7 +34,7 @@ public class LoginController {
         }
     }
 
-    @Auth
+   @Auth
     @GetMapping("")
     public ResponseEntity checkToken() {
         try {

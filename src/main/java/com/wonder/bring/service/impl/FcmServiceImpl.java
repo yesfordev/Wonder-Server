@@ -1,36 +1,36 @@
 package com.wonder.bring.service.impl;
 
-import com.wonder.bring.mapper.FcmMapper;
 import com.wonder.bring.service.FcmService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 @Slf4j
 @Service
 public class FcmServiceImpl implements FcmService {
-    private final FcmMapper fcmMapper;
     private final String FIREBASE_API_URL = "https://fcm.googleapis.com/fcm/send";
-    private final String FIREBASE_SERVER_KEY = "YOUR_SERVER_KEY";
 
-    public FcmServiceImpl(final FcmMapper fcmMapper) {
-        this.fcmMapper = fcmMapper;
-    }
+    @Value("${FIREBASE.SERVER.KEY}")
+    private String FIREBASE_SERVER_KEY;
 
     @Override
-    public void sendPush(final int orderIdx) {
+    public void sendPush(final String fcmToken, final String title, final String body) {
         JSONObject msg = new JSONObject();
 
-        //주문번호로 푸쉬보낼 점주의 토큰값 찾아오기
-        String fcmToken = fcmMapper.getFcmToken(orderIdx);
-
-        //타이틀과 내용을 db에서 갖고와서 넣을것
-        //msg.put("title", messageTitle);
-        //msg.put("body", message);
-
+        try {
+            msg.put("title", URLEncoder.encode(title  ,"UTF-8"));
+            msg.put("body", URLEncoder.encode(title  ,"UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         String response = callToFcmServer(msg, fcmToken); //파이어베이스 서버에 요청
         System.out.println("Got response from fcm Server : " + response + "\n\n");
 
@@ -41,11 +41,14 @@ public class FcmServiceImpl implements FcmService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Authorization", "key=" + FIREBASE_SERVER_KEY);
         httpHeaders.set("Content-Type", "application/json");
+        httpHeaders.set("Content-Encoding", "UTF-8");
 
         JSONObject json = new JSONObject();
 
-        json.put("notification", message);
         json.put("to", receiverFcmKey);
+        json.put("data", message);
+        //json.put("notification", message);
+        json.put("sound", "default");
 
         System.out.println("Sending :" + json.toString());
 

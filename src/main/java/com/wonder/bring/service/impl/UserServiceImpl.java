@@ -15,6 +15,8 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.Optional;
 
+import static com.wonder.bring.utils.Encryption.encrypt;
+
 /**
  * Created by bomi on 2018-12-28.
  */
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public DefaultRes saveUser(final SignUpReq signUpReq) {
         try {
             // 빈칸 검사
-            if(signUpReq.getId().isEmpty() || signUpReq.getPasswd().isEmpty() || signUpReq.getNick().isEmpty()) {
+            if(signUpReq.getId().isEmpty() || signUpReq.getPassword().isEmpty() || signUpReq.getNick().isEmpty()) {
                 return DefaultRes.res(Status.BAD_REQUEST, Message.SIGN_UP_FAIL);
             }
 
@@ -76,6 +78,13 @@ public class UserServiceImpl implements UserService {
             }
 
             // 중복되지 않았다면 저장
+
+            //패스워드 인코딩
+
+            String rawPassword =  signUpReq.getPassword();
+            String encodedPassword = encrypt(rawPassword);
+            signUpReq.setPassword(encodedPassword);
+
             userMapper.save(signUpReq);
             int idx = userMapper.findByUserId(signUpReq.getId());
             // 프로필 사진이 있을 경우

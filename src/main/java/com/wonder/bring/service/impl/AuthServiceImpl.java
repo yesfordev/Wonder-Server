@@ -9,9 +9,7 @@ import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static com.wonder.bring.utils.Encryption.encrypt;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -19,14 +17,15 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
     private final JwtServiceImpl jwtServiceImpl;
 
-    public AuthServiceImpl(final UserMapper userMapper, JwtServiceImpl jwtServiceImpl) {
+    public AuthServiceImpl(final UserMapper userMapper, final JwtServiceImpl jwtServiceImpl) {
         this.userMapper = userMapper;
         this.jwtServiceImpl = jwtServiceImpl;
     }
 
     @Override
     public DefaultRes<JwtServiceImpl.TokenRes> login(final LoginReq loginReq) {
-        final User user = userMapper.findByIdAndPassword(loginReq.getId(), loginReq.getPassword());
+        final User user = userMapper.findByIdAndPassword(loginReq.getId(),
+                encrypt(loginReq.getPassword()));
 
         if (user != null) {
             //토큰 생성

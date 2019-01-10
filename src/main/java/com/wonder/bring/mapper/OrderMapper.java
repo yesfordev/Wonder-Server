@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -36,7 +35,7 @@ public interface OrderMapper {
     //주문내역 전체찾기
     @Select("SELECT ORDER_LISTS.order_idx, ORDER_LISTS.time, ORDER_LISTS.state, STORES.name " +
             "FROM ORDER_LISTS JOIN STORES ON STORES.store_idx = ORDER_LISTS.store_idx " +
-            "WHERE user_idx = #{userIdx} AND (state != 3 AND state != 4)ORDER BY time DESC")
+            "WHERE user_idx = #{userIdx} AND (state != 3 AND state != 4) ORDER BY time DESC")
     List<OrderInfo> findOrderAll(@Param("userIdx") final int userIdx);
 
     //닉네임조회
@@ -49,7 +48,8 @@ public interface OrderMapper {
      * @return
      */
     //매장이름
-    @Select("SELECT s.name FROM STORES s inner join ORDER_LISTS o ON (s.store_idx = o.store_idx) WHERE o.order_idx = #{order_idx}")
+    @Select("SELECT s.name FROM STORES s inner join ORDER_LISTS o ON (s.store_idx = o.store_idx) " +
+            "WHERE o.order_idx = #{order_idx}")
     String findStoreByOrderIdx(@Param("order_idx") final int orderIdx);
 
     //메뉴이름 사이즈 수량 총가격 요청사항
@@ -57,4 +57,11 @@ public interface OrderMapper {
             "FROM MENU m inner join ORDER_MENU o ON (m.menu_idx = o.menu_idx) " +
             "WHERE o.order_idx = #{order_idx}")
     List<OrderDetailInfo> findOrderByOrderIdx(@Param("order_idx") final int orderIdx);
+
+    /**
+     * 점주의 fcmToken값 가져오기
+     */
+    @Select("SELECT fcm_token FROM OWNER INNER JOIN STORES ON (STORES.owner_idx = OWNER.owner_idx) " +
+            "WHERE STORES.store_idx = #{storeIdx}")
+    String getOwnerToken(final int storeIdx);
 }
