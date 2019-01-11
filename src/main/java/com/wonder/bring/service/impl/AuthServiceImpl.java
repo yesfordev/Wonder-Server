@@ -7,31 +7,23 @@ import com.wonder.bring.model.LoginReq;
 import com.wonder.bring.service.AuthService;
 import com.wonder.bring.utils.Message;
 import com.wonder.bring.utils.Status;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     private final UserMapper userMapper;
     private final JwtServiceImpl jwtServiceImpl;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AuthServiceImpl(final UserMapper userMapper, final JwtServiceImpl jwtServiceImpl,
-                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AuthServiceImpl(final UserMapper userMapper, final JwtServiceImpl jwtServiceImpl) {
         this.userMapper = userMapper;
         this.jwtServiceImpl = jwtServiceImpl;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public DefaultRes<JwtServiceImpl.TokenRes> login(final LoginReq loginReq) {
-        final User user = userMapper.findByIdAndPassword(loginReq.getId(),
-                bCryptPasswordEncoder.encode(loginReq.getPassword()));
+        final User user = userMapper.findByIdAndPassword(loginReq.getId(), loginReq.getPassword());
 
         if (user != null) {
             //토큰 생성
