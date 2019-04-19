@@ -25,11 +25,10 @@ public class FcmServiceImpl implements FcmService {
         JSONObject msg = new JSONObject();
 
         try {
-            msg.put("title", URLEncoder.encode(title  ,"UTF-8"));
-            msg.put("body", URLEncoder.encode(title  ,"UTF-8"));
+            msg.put("title", URLEncoder.encode(title ,"UTF-8"));
+            msg.put("body", URLEncoder.encode(body ,"UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+          log.error(e.getMessage());
         }
         String response = callToFcmServer(msg, fcmToken); //파이어베이스 서버에 요청
         System.out.println("Got response from fcm Server : " + response + "\n\n");
@@ -47,7 +46,6 @@ public class FcmServiceImpl implements FcmService {
 
         json.put("to", receiverFcmKey);
         json.put("data", message);
-        //json.put("notification", message);
         json.put("sound", "default");
 
         System.out.println("Sending :" + json.toString());

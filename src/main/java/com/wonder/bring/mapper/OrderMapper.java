@@ -35,7 +35,7 @@ public interface OrderMapper {
     //주문내역 전체찾기
     @Select("SELECT ORDER_LISTS.order_idx, ORDER_LISTS.time, ORDER_LISTS.state, STORES.name " +
             "FROM ORDER_LISTS JOIN STORES ON STORES.store_idx = ORDER_LISTS.store_idx " +
-            "WHERE user_idx = #{userIdx} AND (state != 3 AND state != 4) ORDER BY time DESC")
+            "WHERE user_idx = #{userIdx} AND (state NOT IN (3, 4)) ORDER BY time DESC")
     List<OrderInfo> findOrderAll(@Param("userIdx") final int userIdx);
 
     //닉네임조회

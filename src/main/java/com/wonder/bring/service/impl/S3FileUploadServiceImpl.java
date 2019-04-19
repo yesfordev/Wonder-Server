@@ -51,13 +51,13 @@ public class S3FileUploadServiceImpl implements S3FileUploadService {
         String url;
         File file = null;
         try {
-            // 롹장자
+            // 확장자
             final String ext = origName.substring(origName.lastIndexOf('.'));
             // 파일 이름 암호화
             final String saveFileName = getUuid() + ext;
             // 파일 객체 생성
 
-            file = new File(FileUtils.getTempDirectory() +"/" +saveFileName);
+            file = new File(FileUtils.getTempDirectory() +"/" + saveFileName);
 
             // 파일 변환
             uploadFile.transferTo(file);
