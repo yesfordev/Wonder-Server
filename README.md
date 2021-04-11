@@ -42,6 +42,9 @@
 - DB 모델링
 - API 문서 작성
 
+### API 명세서
+- [API](https://github.com/Bring-SOPT/Wonder-Server/wiki)
+
 ### 프로젝트 의존성
 
 ```
