@@ -136,10 +136,10 @@
 
 ### 개발자
 
-- **서영은** - [yesfordev](https://github.com/yesfordev)
-- **김보미** - [BBBOMi](https://github.com/BBBOMi)
-- **박다예** - [parkdaye](https://github.com/parkdaye)
-- **신지우** - [jiwoooooo](https://github.com/jiwoooooo)
+- **팀원1(본인)** - [yesfordev](https://github.com/yesfordev)
+- **팀원2** - [BBBOMi](https://github.com/BBBOMi)
+- **팀원3** - [parkdaye](https://github.com/parkdaye)
+- **팀원4** - [jiwoooooo](https://github.com/jiwoooooo)
 
 ### bring 프로젝트
 
